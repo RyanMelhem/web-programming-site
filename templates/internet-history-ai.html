@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History of the Internet</title>
+</head>
+<body>
+    <header>
+        <h1>History of the Internet</h1>
+        <nav>
+            <ul>
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#technologies">Key Technologies</a></li>
+                <li><a href="{{ url_for('web_history_ai') }}">Web History (AI)</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <p>The Internet is a worldwide network of interconnected computer networks that enable devices anywhere in the world to communicate with each other. It did not start out as a consumer product but as a U.S. government research effort in the late 1950s and 1960s to build a communication system that could withstand disruption. It eventually became ARPANET, a small experimental network that connected a few universities and research computers. This experiment evolved over the next few decades into the decentralized, world-wide infrastructure we know today as the Internet. Key technologies such as packet switching and TCP/IP were developed.</p>
+
+        <section id="timeline">
+            <h2>Key Milestones</h2>
+
+            <article>
+                <h3>1958 — ARPA is created</h3>
+                <p>The U.S. created ARPA in response to the Soviet launch of Sputnik, establishing the government research body that would eventually fund the network that became the Internet.</p>
+                <p>Source: <a href="https://historyofinformation.com/detail.php?id=768">historyofinformation.com</a></p>
+            </article>
+
+            <article>
+                <h3>1961 — Leonard Kleinrock publishes "Information Flow in Large Communication Nets"</h3>
+                <p>Introduced packet-switching theory, the foundational idea of breaking data into pieces for transmission, which still underlies how data moves across networks today.</p>
+                <p>Source: <a href="https://www.lk.cs.ucla.edu/personal_history.html">lk.cs.ucla.edu</a></p>
+            </article>
+
+            <article>
+                <h3>1969 — ARPANET's first host-to-host message</h3>
+                <p>Sent from UCLA to Stanford Research Institute. The first real-world test of a working computer network; considered the technical starting point of the Internet.</p>
+                <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
+            </article>
+
+            <article>
+                <h3>1972 (disputed) — Ray Tomlinson develops networked email</h3>
+                <p>Developed at BBN, choosing "@" to separate user from host — the first major practical, person-to-person use of the network, and the ancestor of every email address format still used today. Note: sources disagree on the exact year. The Internet Society's own history document lists 1972, while Ray Tomlinson stated in later interviews that 1971 is the correct year and that 1972 was a mistaken date that became widely repeated.</p>
+                <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
+            </article>
+
+            <article>
+                <h3>1973 — Vint Cerf and Bob Kahn begin developing TCP/IP</h3>
+                <p>Created the shared protocol that let separate, incompatible computer networks communicate with each other, forming the technical backbone of the modern Internet.</p>
+                <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
+            </article>
+
+            <article>
+                <h3>1983 — ARPANET fully switches to TCP/IP ("Flag Day")</h3>
+                <p>January 1, 1983 — widely regarded as the technical "birthday" of the Internet as a unified network.</p>
+                <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
+            </article>
+
+            <article>
+                <h3>1990 — ARPANET is officially decommissioned</h3>
+                <p>Marked the end of the original experimental network, which by then had been fully succeeded by NSFNET and the broader Internet.</p>
+                <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
+            </article>
+        </section>
+
+        <section id="technologies">
+            <h2>Three Key Technologies</h2>
+
+            <article>
+                <h3>Packet switching</h3>
+                <p>The method of breaking data into small, independently-routed packets rather than sending it as one continuous stream, allowing a decentralized and resilient network to function.</p>
+                <p>Source: <a href="https://www.lk.cs.ucla.edu/personal_history.html">lk.cs.ucla.edu</a></p>
+            </article>
+
+            <article>
+                <h3>TCP/IP</h3>
+                <p>The common set of rules that lets different networks and devices, regardless of hardware or software, communicate with each other reliably; this is the technology that unifies the Internet as a single "network of networks".</p>
+                <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
+            </article>
+
+            <article>
+                <h3>DNS (Domain Name System)</h3>
+                <p>Invented by Paul Mockapetris in November 1983, DNS replaced a single manually updated file (HOSTS.TXT) with a distributed, scalable naming system, allowing users to type human-readable names instead of numeric IP addresses.</p>
+                <p>Source: <a href="https://www.internetsociety.org/blog/2013/11/happy-30th-birthday-dns/">internetsociety.org</a></p>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>This website is created for educational purposes only, as part of the GIN446 - Web Programming course, School of Engineering, USEK.</p>
+    </footer>
+</body>
+</html>

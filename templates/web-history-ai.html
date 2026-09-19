@@ -1,23 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>History of the Web</title>
-</head>
-<body>
-    <header>
-        <h1>History of the Web</h1>
-        <nav>
-            <ul>
-                <li><a href="#timeline">Timeline</a></li>
-                <li><a href="#technologies">Key Technologies</a></li>
-                <li><a href="{{ url_for('internet_history_ai') }}">Internet History (AI)</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
+{% extends "base.html" %}
+{% block content %}
         <p>The World Wide Web is a system of interlinked documents and resources, accessed over the Internet through browsers, that allows information to be published, linked and navigated using simple point-and-click hyperlinks. The Web is, in fact, only an application on top of that underlying network -- and it didn't arrive until 1989, two decades after the first message was sent on the Internet. It was invented by Tim Berners-Lee, a scientist at CERN, who was trying to solve a much narrower problem: helping physicists at CERN to share research documents and data with each other more easily. What was an internal tool for one research lab became the open, worldwide network of pages we use today after CERN put the software in the public domain in 1993.</p>
 
         <section id="timeline">
@@ -81,10 +63,4 @@
                 <p>Source: <a href="https://www.w3.org/TR/webarch/">w3.org</a></p>
             </article>
         </section>
-    </main>
-
-    <footer>
-        <p>This website is created for educational purposes only, as part of the GIN446 - Web Programming course, School of Engineering, USEK.</p>
-    </footer>
-</body>
-</html>
+{% endblock %}

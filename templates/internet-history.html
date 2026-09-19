@@ -1,22 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Internet History</title>
-</head>
-<body>
-    <header>
-        <h1>The History of the Internet</h1>
-        <nav>
-            <ul>
-                <li><a href="#timeline">Timeline</a></li>
-                <li><a href="#technologies">Key Technologies</a></li>
-                <li><a href="{{ url_for('web_history') }}">Web History</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
+{% extends "base.html" %}
+{% block content %}
         <p>The Internet is a worldwide network of interconnected computer networks that enable devices 
             anywhere in the world to communicate with each other. It did not start out as a consumer product 
             but as a U.S. government research effort in the late 1950s and 1960s to build a communication 
@@ -100,9 +83,4 @@
                 <a href="https://www.internetsociety.org/blog/2013/11/happy-30th-birthday-dns/">Source: InternetSociety.com</a>
             </article>
         </section>
-    </main>
-    <footer>
-        <p>This page was created for educational purposes as part of a web programming course - GIN446 done at USEK.</p>
-    </footer>
-</body>
-</html>
+{% endblock %}

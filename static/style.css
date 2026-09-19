@@ -1,0 +1,215 @@
+:root {
+    /* Colors */
+    --bg: #0f1730;
+    --bg-elevated: #16204a;
+    --text: #e8eaf3;
+    --text-muted: #b6bcd6;
+    --primary: #9b6bff;
+    --primary-hover: #b389ff;
+
+    /* Fonts */
+    --font-heading: Georgia, 'Times New Roman', serif;
+    --font-body: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+
+    /* Spacing */
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 3.5rem;
+
+    /* Corners */
+    --radius: 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    padding: var(--spacing-md);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--text);
+}
+
+h1 {
+    font-size: 2.25rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+}
+
+p {
+    color: var(--text-muted);
+    margin-bottom: var(--spacing-sm);
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+header {
+    margin-bottom: var(--spacing-lg);
+}
+
+nav {
+    margin-top: var(--spacing-sm);
+}
+
+nav a {
+    display: inline-block;
+    background-color: var(--bg-elevated);
+    color: var(--text);
+    padding: 0.6rem 1.2rem;
+    margin-right: 0.6rem;
+    margin-bottom: 0.6rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+nav a:hover {
+    background-color: var(--primary);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+main {
+    max-width: 800px;
+}
+
+section {
+    margin-bottom: var(--spacing-lg);
+}
+
+article {
+    background-color: var(--bg-elevated);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing-sm);
+}
+
+article a {
+    font-size: 0.9rem;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 0.6rem;
+}
+
+footer {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--bg-elevated);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+/* Flexbox for the nav */
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+nav a {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+
+/* Grid for the Weekly Work list */
+main ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+main li {
+    background-color: var(--bg-elevated);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 0;
+}
+/* Mobile-first base adjustments */
+body {
+    padding: var(--spacing-sm);
+}
+
+h1 {
+    font-size: 1.6rem;
+}
+
+h2 {
+    font-size: 1.3rem;
+}
+
+nav a {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+main ul {
+    grid-template-columns: 1fr;
+}
+
+/* Tablet and up */
+@media (min-width: 600px) {
+    body {
+        padding: var(--spacing-md);
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    main ul {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    body {
+        padding: var(--spacing-lg);
+    }
+
+    h1 {
+        font-size: 2.25rem;
+    }
+
+    nav a {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+}

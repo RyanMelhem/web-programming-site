@@ -1,0 +1,149 @@
+/* Form layout */
+form {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Each section becomes a clean card */
+fieldset {
+    background-color: var(--bg-elevated);
+    border: none;
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Nested fieldsets (radio groups) get a lighter touch */
+fieldset fieldset {
+    background-color: var(--bg);
+    border: 1px solid var(--bg-elevated);
+    padding: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+legend {
+    font-family: var(--font-heading);
+    color: var(--primary);
+    font-size: 1.1rem;
+    padding: 0 0.5rem;
+}
+
+fieldset fieldset legend {
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+/* Labels and inputs stacked, one per line */
+label {
+    display: block;
+    margin-top: var(--spacing-sm);
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid var(--bg-elevated);
+    border-radius: var(--radius);
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+}
+
+textarea {
+    resize: vertical;
+}
+
+select[multiple] {
+    height: 8rem;
+}
+
+/* Checkboxes and radios sit inline with their label */
+input[type="checkbox"],
+input[type="radio"] {
+    width: auto;
+    margin-right: 0.5rem;
+    accent-color: var(--primary);
+}
+
+fieldset fieldset label {
+    display: inline;
+    font-weight: normal;
+    margin-top: 0;
+    margin-right: var(--spacing-sm);
+}
+
+/* Consent checkbox line */
+form > input[type="checkbox"] {
+    margin-top: var(--spacing-md);
+}
+
+form > label[for="confirmation"] {
+    display: inline;
+    font-weight: normal;
+}
+
+/* Buttons */
+button {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    margin-top: var(--spacing-md);
+    margin-right: 0.6rem;
+}
+
+button[type="submit"] {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+}
+
+button[type="reset"] {
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--bg-elevated);
+}
+
+button[type="reset"]:hover {
+    background-color: var(--bg-elevated);
+}
+
+/* Color picker sizing */
+input[type="color"] {
+    width: 60px;
+    height: 40px;
+    padding: 0.2rem;
+    border: 1px solid var(--bg-elevated);
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+/* Mobile-first: shrink padding on small screens */
+fieldset {
+    padding: var(--spacing-sm);
+}
+
+@media (min-width: 600px) {
+    fieldset {
+        padding: var(--spacing-md);
+    }
+}

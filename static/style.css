@@ -1,11 +1,11 @@
 :root {
     /* Colors */
-    --bg: #0f1730;
-    --bg-elevated: #16204a;
-    --text: #e8eaf3;
-    --text-muted: #b6bcd6;
-    --primary: #9b6bff;
-    --primary-hover: #b389ff;
+    --bg: #f7f5f0;
+    --bg-elevated: #ece7db;
+    --text: #1b2a4a;
+    --text-muted: #3d4d6b;
+    --primary: #1b6b6b;
+    --primary-hover: #145454;
 
     /* Fonts */
     --font-heading: Georgia, 'Times New Roman', serif;
@@ -30,17 +30,18 @@ body {
     color: var(--text);
     font-family: var(--font-body);
     line-height: 1.6;
-    padding: var(--spacing-md);
+    padding: 0;
 }
 
 h1, h2, h3 {
     font-family: var(--font-heading);
     color: var(--text);
+    text-align: center;
 }
 
 h1 {
-    font-size: 2.25rem;
-    margin-bottom: var(--spacing-sm);
+    font-size: 1.8rem;
+    margin: 0 0 0.5rem 0;
 }
 
 h2 {
@@ -54,6 +55,7 @@ h2 {
 h3 {
     font-size: 1.2rem;
     margin-bottom: 0.4rem;
+    text-align: left;
 }
 
 p {
@@ -71,12 +73,27 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Sticky header */
 header {
-    margin-bottom: var(--spacing-lg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--bg-elevated);
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: center;
+}
+
+header p {
+    text-align: center;
 }
 
 nav {
     margin-top: var(--spacing-sm);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
 }
 
 nav a {
@@ -84,8 +101,6 @@ nav a {
     background-color: var(--bg-elevated);
     color: var(--text);
     padding: 0.6rem 1.2rem;
-    margin-right: 0.6rem;
-    margin-bottom: 0.6rem;
     border-radius: var(--radius);
     text-decoration: none;
     font-size: 0.95rem;
@@ -99,6 +114,9 @@ nav a:hover {
 
 main {
     max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+    padding-bottom: 6rem; /* keeps content clear of the fixed footer */
 }
 
 section {
@@ -110,6 +128,7 @@ article {
     padding: var(--spacing-sm);
     border-radius: var(--radius);
     margin-bottom: var(--spacing-sm);
+    text-align: left;
 }
 
 article a {
@@ -125,23 +144,23 @@ li {
     margin-bottom: 0.6rem;
 }
 
+/* Sticky (fixed) footer */
 footer {
-    margin-top: var(--spacing-lg);
-    padding-top: var(--spacing-md);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg);
     border-top: 1px solid var(--bg-elevated);
     color: var(--text-muted);
-    font-size: 0.85rem;
-}
-/* Flexbox for the nav */
-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.6rem var(--spacing-sm);
+    z-index: 100;
 }
 
-nav a {
-    margin-right: 0;
-    margin-bottom: 0;
+footer p {
+    margin: 0.2rem 0;
 }
 
 /* Grid for the Weekly Work list */
@@ -149,6 +168,7 @@ main ul {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1rem;
+    text-align: left;
 }
 
 main li {
@@ -157,13 +177,10 @@ main li {
     border-radius: var(--radius);
     margin-bottom: 0;
 }
-/* Mobile-first base adjustments */
-body {
-    padding: var(--spacing-sm);
-}
 
+/* Mobile-first base adjustments */
 h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
 }
 
 h2 {
@@ -179,14 +196,14 @@ main ul {
     grid-template-columns: 1fr;
 }
 
+footer {
+    font-size: 0.7rem;
+}
+
 /* Tablet and up */
 @media (min-width: 600px) {
-    body {
-        padding: var(--spacing-md);
-    }
-
     h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     h2 {
@@ -196,16 +213,16 @@ main ul {
     main ul {
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     }
+
+    footer {
+        font-size: 0.8rem;
+    }
 }
 
 /* Desktop and up */
 @media (min-width: 1024px) {
-    body {
-        padding: var(--spacing-lg);
-    }
-
     h1 {
-        font-size: 2.25rem;
+        font-size: 2rem;
     }
 
     nav a {

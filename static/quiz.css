@@ -1,0 +1,149 @@
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    background-color: var(--bg-elevated);
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+}
+
+h1 {
+    font-family: var(--font-heading);
+    color: var(--text);
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+#progress {
+    font-weight: 600;
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+#questionText {
+    font-family: var(--font-heading);
+    color: var(--text);
+    font-size: 1.3rem;
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.choice {
+    display: block;
+    background-color: var(--bg);
+    border: 1px solid var(--bg-elevated);
+    border-radius: var(--radius);
+    padding: 0.7rem 1rem;
+    margin: 0.6rem 0;
+    cursor: pointer;
+    color: var(--text);
+}
+
+.choice:hover {
+    border-color: var(--primary);
+}
+
+.navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: var(--spacing-md);
+}
+
+button {
+    font-family: var(--font-body);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--bg-elevated);
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--bg-elevated);
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.submit {
+    display: block;
+    margin-top: var(--spacing-md);
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+}
+
+.submit:hover {
+    background-color: var(--primary-hover);
+}
+
+#resultsPanel h2 {
+    font-family: var(--font-heading);
+    color: var(--text);
+}
+
+#scoreText,
+#percentageText,
+#performanceText {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin: 0.4rem 0;
+}
+
+#correction {
+    background-color: var(--bg);
+    border: 1px solid var(--bg-elevated);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm);
+    white-space: pre-wrap;
+    font-family: var(--font-body);
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-top: var(--spacing-sm);
+}
+
+/* Highlights the selected answer using the site's accent color */
+.choice:has(input:checked) {
+    background-color: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+.choice {
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.choice:active {
+    transform: scale(0.98);
+}
+
+/* A subtle progress bar under the question counter */
+#progress {
+    position: relative;
+    padding-bottom: 0.6rem;
+}
+
+/* Buttons get a slight lift on hover for a more "clicky" feel */
+button:hover:not(:disabled) {
+    background-color: var(--bg-elevated);
+    transform: translateY(-1px);
+}
+
+button {
+    transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+/* Results panel gets a celebratory border based on performance */
+#resultsPanel {
+    border-top: 4px solid var(--primary);
+    padding-top: var(--spacing-sm);
+}
+
+#resultsPanel {
+    display: none;
+}

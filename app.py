@@ -40,19 +40,28 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+# Links shown on the home page and on the plain Week 1 page.
+WEEKLY_WORK = [
+    {"week": 1, "title": "Original portfolio home page (plain HTML)", "url": "/week1"},
+    {"week": 2, "title": "History of the Internet", "url": "/internet-history"},
+    {"week": 2, "title": "History of the Web", "url": "/web-history"},
+    {"week": 2, "title": "History of the Internet (AI)", "url": "/internet-history-ai"},
+    {"week": 2, "title": "History of the Web (AI)", "url": "/web-history-ai"},
+    {"week": 4, "title": "Engineering Student Profile", "url": "/submit-profile"},
+    {"week": 5, "title": "JavaScript app", "url": "/quiz"},
+]
+
 
 @app.route("/")
 def home():
     """Serve the portfolio home page."""
-    weekly_work = [
-        {"week": 2, "title": "History of the Internet", "url": "/internet-history"},
-        {"week": 2, "title": "History of the Web", "url": "/web-history"},
-        {"week": 2, "title": "History of the Internet (AI)", "url": "/internet-history-ai"},
-        {"week": 2, "title": "History of the Web (AI)", "url": "/web-history-ai"},
-        {"week": 4, "title": "Engineering Student Profile", "url": "/submit-profile"},
-        {"week": 5, "title": "JavaScript app", "url": "/quiz"},
-    ]
-    return render_template("index.html", weekly_work=weekly_work)
+    return render_template("index.html", weekly_work=WEEKLY_WORK)
+
+
+@app.route("/week1")
+def week1():
+    """Week 1: the original plain-HTML home page, with no CSS."""
+    return render_template("week1.html", weekly_work=WEEKLY_WORK)
 
 
 @app.route("/internet-history")

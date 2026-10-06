@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-        <p>The Internet is a worldwide network of interconnected computer networks that enable devices 
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>The Internet is a worldwide network of interconnected computer networks that enable devices 
             anywhere in the world to communicate with each other. It did not start out as a consumer product 
             but as a U.S. government research effort in the late 1950s and 1960s to build a communication 
             system that could withstand disruption. It eventually became ARPANET, a small experimental 
@@ -8,7 +10,8 @@
             the next few decades into the decentralized, world-wide infrastructure we know today as the 
             Internet. Key technologies such as packet switching and TCP/IP were developed. The timeline 
             below shows the major milestones in that evolution, from its military-research origins to the 
-            protocols that still form the basis of the Internet today. </p>
+            protocols that still form the basis of the Internet today.  The timeline now runs from those origins all the way to the present day, covering the arrival of commercial access, Wi-Fi, IPv6, broadband, and mobile 4G and 5G networks, followed by the three key technologies behind it: packet switching, TCP/IP and DNS.</p>
+        </section>
         <section id="timeline">
             <h2>Timeline of the Internet</h2>
             <article>
@@ -23,40 +26,75 @@
                 <p>Leonard Kleinrock publishes "Information Flow in Large Communication Nets” 
                    Introduced packet-switching theory, the foundational idea of breaking data into pieces for 
                    transmission, which still underlies how data moves across networks today.</p>
-                <a href="https://www.lk.cs.ucla.edu/personal_history.html">Source: KleinrockPublish.com</a>
+                <a href="https://www.lk.cs.ucla.edu/personal_history.html">Source: lk.cs.ucla.edu</a>
             </article>
             <article>
                 <h3>1969: First ARPANET message (UCLA-SRI)</h3>
                 <p>ARPANET's first host-to-host message is sent (UCLA to Stanford Research Institute): 
                    The first real-world test of a working computer network; considered the technical starting point 
                    of the Internet.</p>
-                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: BriefHistoryInternet.com</a>
+                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: internetsociety.org</a>
             </article>
             <article>
                 <h3>1972(disputed): Tomlinson's networked email</h3>
                 <p> Ray Tomlinson develops networked email at BBN, choosing 
-                   “to separate user from host — The first major practical, person-to-person use of the network, and 
+                   “@” to separate user from host — The first major practical, person-to-person use of the network, and 
                     the ancestor of every email address format still used today.
                     Note: Sources disagree on the exact year. The Internet Society's own history document lists 1972, 
                     while Ray Tomlinson stated in later interviews that 1971 is the correct year and that 1972 was a 
                     mistaken date that became widely repeated.</p>
-                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: BriefHistoryInternet.com</a>
+                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: internetsociety.org</a>
             </article>
             <article>
                 <h3>1973: Vint Cerf and Bob Kahn begin developing TCP/IP</h3>
                 <p>Created the shared protocol that let separate, incompatible computer networks communicate with each other, forming the 
                    technical backbone of the modern Internet.</p>
-                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: BriefHistoryInternet.com</a>
+                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: internetsociety.org</a>
             </article>
             <article>
                 <h3>1983: ARPANET fully switches to TCP/IP ("Flag Day")</h3>
                 <p>January 1 1983, Widely regarded as the technical "birthday" of the Internet as a unified network. </p>
-                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: BriefHistoryInternet.com</a>
+                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: internetsociety.org</a>
             </article>
             <article>
                 <h3>1990: ARPANET officially decommissioned</h3>
                 <p>Marked the end of the original experimental network, which by then had been fully succeeded by NSFNET and the broader Internet. </p>
-                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: BriefHistoryInternet.com</a>
+                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: internetsociety.org</a>
+            </article>
+            <article>
+                <h3>1995: NSFNET is retired and the Internet is commercialised</h3>
+                <p>In April 1995 the NSF stopped funding the NSFNET backbone, and commercial providers took over the main network links. This opened the Internet to businesses and the general public.</p>
+                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: internetsociety.org</a>
+            </article>
+            <article>
+                <h3>1997: IEEE 802.11 wireless LAN standard (Wi-Fi)</h3>
+                <p>The IEEE approved the 802.11 standard on June 26, 1997, defining wireless local area networking. The Wi-Fi Alliance was formed in 1999 and adopted the name "Wi-Fi" in 2000. Devices could now join a network without cables.</p>
+                <a href="https://standards.ieee.org/standard/802_11-1997.html">Source: standards.ieee.org</a>
+            </article>
+            <article>
+                <h3>1998: IPv6 is specified (RFC 2460)</h3>
+                <p>IPv6 was published as a standard in December 1998 to solve the shortage of IPv4 addresses. Its permanent, large-scale deployment began with World IPv6 Launch on June 6, 2012.</p>
+                <a href="https://www.rfc-editor.org/rfc/rfc2460">Source: rfc-editor.org</a>
+            </article>
+            <article>
+                <h3>2000s: Broadband replaces dial-up</h3>
+                <p>According to Pew Research, about 1% of U.S. adults had home broadband in 2000, rising to roughly 60-64% by 2010. Always-on, faster connections made video, streaming and modern web applications practical.</p>
+                <a href="https://www.pewresearch.org/internet/fact-sheet/internet-broadband/">Source: pewresearch.org</a>
+            </article>
+            <article>
+                <h3>2007: The iPhone brings the mobile Internet to the mainstream</h3>
+                <p>Apple announced the iPhone on January 9, 2007, describing it as a phone, an iPod and an Internet communications device in one. Browsing the full web from a pocket device became an everyday activity.</p>
+                <a href="https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/">Source: apple.com</a>
+            </article>
+            <article>
+                <h3>2010: 4G (IMT-Advanced) is confirmed by the ITU</h3>
+                <p>In late 2010 the ITU recognised LTE-Advanced and WirelessMAN-Advanced as IMT-Advanced ("4G") technologies, targeting up to 1 Gbit/s for low mobility. Mobile data speeds became comparable to home broadband.</p>
+                <a href="https://www.rcrwireless.com/20101124/wireless/itu-finalizes-4g-technologies">Source: rcrwireless.com</a>
+            </article>
+            <article>
+                <h3>2015-2021: 5G standardisation (IMT-2020)</h3>
+                <p>The ITU's IMT-2020 framework (Recommendation M.2083, 2015; M.2150, February 2021) defined 5G, with higher speeds, lower latency and support for very large numbers of connected devices.</p>
+                <a href="https://www.itu.int/en/ITU-R/study-groups/rsg5/rwp5d/imt-2020/Pages/default.aspx">Source: itu.int</a>
             </article>
         </section>
         <section id="technologies">
@@ -66,21 +104,38 @@
                 <p> The method of breaking data into small, independently-routed packets rather 
                     than sending it as one continuous stream, allowing a decentralized and resilient network to 
                     function.</p>
-                <a href="https://lk.cs.ucla.edu/personal_history.html">Source: InternetPersonal.com</a>
+                <a href="https://lk.cs.ucla.edu/personal_history.html">Source: lk.cs.ucla.edu</a>
             </article>
             <article>
                 <h3>TCP/IP</h3>
                 <p>The common set of rules that lets 
                     different networks and devices, regardless of hardware or software, communicate with each other 
                     reliably; this is the technology that unifies the Internet as a single "network of networks". </p>
-                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: BriefHistoryInternet.com</a>
+                <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Source: internetsociety.org</a>
             </article>
             <article>
                 <h3>DNS</h3>
                 <p>Invented by Paul Mockapetris in November 1983, DNS replaced 
                     a single manually updated file (HOSTS.TXT) with a distributed, scalable naming system, 
                     allowing users to type human-readable names instead of numeric IP addresses. </p>
-                <a href="https://www.internetsociety.org/blog/2013/11/happy-30th-birthday-dns/">Source: InternetSociety.com</a>
+                <a href="https://www.internetsociety.org/blog/2013/11/happy-30th-birthday-dns/">Source: internetsociety.org</a>
             </article>
+        </section>
+
+        <section id="references">
+            <h2>References</h2>
+            <ul>
+                <li><a href="https://historyofinformation.com/detail.php?id=768">History of Information: ARPA is created (1958)</a></li>
+                <li><a href="https://www.lk.cs.ucla.edu/personal_history.html">Leonard Kleinrock, personal history (UCLA)</a></li>
+                <li><a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Internet Society: Brief History of the Internet</a></li>
+                <li><a href="https://standards.ieee.org/standard/802_11-1997.html">IEEE: 802.11-1997 standard</a></li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc2460">IETF RFC 2460: Internet Protocol, Version 6 (IPv6)</a></li>
+                <li><a href="https://www.pewresearch.org/internet/fact-sheet/internet-broadband/">Pew Research Center: Internet/Broadband Fact Sheet</a></li>
+                <li><a href="https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/">Apple: Apple Reinvents the Phone with iPhone (2007)</a></li>
+                <li><a href="https://www.rcrwireless.com/20101124/wireless/itu-finalizes-4g-technologies">RCR Wireless: ITU finalizes 4G technologies (2010)</a></li>
+                <li><a href="https://www.itu.int/en/ITU-R/study-groups/rsg5/rwp5d/imt-2020/Pages/default.aspx">ITU-R: IMT-2020 (5G)</a></li>
+                <li><a href="https://lk.cs.ucla.edu/personal_history.html">Leonard Kleinrock, personal history (UCLA)</a></li>
+                <li><a href="https://www.internetsociety.org/blog/2013/11/happy-30th-birthday-dns/">Internet Society: Happy 30th Birthday, DNS</a></li>
+            </ul>
         </section>
 {% endblock %}

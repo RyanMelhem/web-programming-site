@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-        <p>The Internet is a worldwide network of interconnected computer networks that enable devices anywhere in the world to communicate with each other. It did not start out as a consumer product but as a U.S. government research effort in the late 1950s and 1960s to build a communication system that could withstand disruption. It eventually became ARPANET, a small experimental network that connected a few universities and research computers. This experiment evolved over the next few decades into the decentralized, world-wide infrastructure we know today as the Internet. Key technologies such as packet switching and TCP/IP were developed.</p>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>The Internet is a worldwide network of interconnected computer networks that enable devices anywhere in the world to communicate with each other. It did not start out as a consumer product but as a U.S. government research effort in the late 1950s and 1960s to build a communication system that could withstand disruption. It eventually became ARPANET, a small experimental network that connected a few universities and research computers. This experiment evolved over the next few decades into the decentralized, world-wide infrastructure we know today as the Internet. Key technologies such as packet switching and TCP/IP were developed.  The timeline now runs from those origins all the way to the present day, covering the arrival of commercial access, Wi-Fi, IPv6, broadband, and mobile 4G and 5G networks, followed by the three key technologies behind it: packet switching, TCP/IP and DNS.</p>
+        </section>
 
         <section id="timeline">
             <h2>Key Milestones</h2>
@@ -47,6 +50,48 @@
                 <p>Marked the end of the original experimental network, which by then had been fully succeeded by NSFNET and the broader Internet.</p>
                 <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
             </article>
+
+            <article>
+                <h3>1995: NSFNET is retired and the Internet is commercialised</h3>
+                <p>In April 1995 the NSF stopped funding the NSFNET backbone, and commercial providers took over the main network links. This opened the Internet to businesses and the general public.</p>
+                <p>Source: <a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">internetsociety.org</a></p>
+            </article>
+
+            <article>
+                <h3>1997: IEEE 802.11 wireless LAN standard (Wi-Fi)</h3>
+                <p>The IEEE approved the 802.11 standard on June 26, 1997, defining wireless local area networking. The Wi-Fi Alliance was formed in 1999 and adopted the name "Wi-Fi" in 2000. Devices could now join a network without cables.</p>
+                <p>Source: <a href="https://standards.ieee.org/standard/802_11-1997.html">standards.ieee.org</a></p>
+            </article>
+
+            <article>
+                <h3>1998: IPv6 is specified (RFC 2460)</h3>
+                <p>IPv6 was published as a standard in December 1998 to solve the shortage of IPv4 addresses. Its permanent, large-scale deployment began with World IPv6 Launch on June 6, 2012.</p>
+                <p>Source: <a href="https://www.rfc-editor.org/rfc/rfc2460">rfc-editor.org</a></p>
+            </article>
+
+            <article>
+                <h3>2000s: Broadband replaces dial-up</h3>
+                <p>According to Pew Research, about 1% of U.S. adults had home broadband in 2000, rising to roughly 60-64% by 2010. Always-on, faster connections made video, streaming and modern web applications practical.</p>
+                <p>Source: <a href="https://www.pewresearch.org/internet/fact-sheet/internet-broadband/">pewresearch.org</a></p>
+            </article>
+
+            <article>
+                <h3>2007: The iPhone brings the mobile Internet to the mainstream</h3>
+                <p>Apple announced the iPhone on January 9, 2007, describing it as a phone, an iPod and an Internet communications device in one. Browsing the full web from a pocket device became an everyday activity.</p>
+                <p>Source: <a href="https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/">apple.com</a></p>
+            </article>
+
+            <article>
+                <h3>2010: 4G (IMT-Advanced) is confirmed by the ITU</h3>
+                <p>In late 2010 the ITU recognised LTE-Advanced and WirelessMAN-Advanced as IMT-Advanced ("4G") technologies, targeting up to 1 Gbit/s for low mobility. Mobile data speeds became comparable to home broadband.</p>
+                <p>Source: <a href="https://www.rcrwireless.com/20101124/wireless/itu-finalizes-4g-technologies">rcrwireless.com</a></p>
+            </article>
+
+            <article>
+                <h3>2015-2021: 5G standardisation (IMT-2020)</h3>
+                <p>The ITU's IMT-2020 framework (Recommendation M.2083, 2015; M.2150, February 2021) defined 5G, with higher speeds, lower latency and support for very large numbers of connected devices.</p>
+                <p>Source: <a href="https://www.itu.int/en/ITU-R/study-groups/rsg5/rwp5d/imt-2020/Pages/default.aspx">itu.int</a></p>
+            </article>
         </section>
 
         <section id="technologies">
@@ -69,5 +114,21 @@
                 <p>Invented by Paul Mockapetris in November 1983, DNS replaced a single manually updated file (HOSTS.TXT) with a distributed, scalable naming system, allowing users to type human-readable names instead of numeric IP addresses.</p>
                 <p>Source: <a href="https://www.internetsociety.org/blog/2013/11/happy-30th-birthday-dns/">internetsociety.org</a></p>
             </article>
+        </section>
+
+        <section id="references">
+            <h2>References</h2>
+            <ul>
+                <li><a href="https://historyofinformation.com/detail.php?id=768">History of Information: ARPA is created (1958)</a></li>
+                <li><a href="https://www.lk.cs.ucla.edu/personal_history.html">Leonard Kleinrock, personal history (UCLA)</a></li>
+                <li><a href="https://www.internetsociety.org/internet/history-internet/brief-history-internet/">Internet Society: Brief History of the Internet</a></li>
+                <li><a href="https://standards.ieee.org/standard/802_11-1997.html">IEEE: 802.11-1997 standard</a></li>
+                <li><a href="https://www.rfc-editor.org/rfc/rfc2460">IETF RFC 2460: Internet Protocol, Version 6 (IPv6)</a></li>
+                <li><a href="https://www.pewresearch.org/internet/fact-sheet/internet-broadband/">Pew Research Center: Internet/Broadband Fact Sheet</a></li>
+                <li><a href="https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/">Apple: Apple Reinvents the Phone with iPhone (2007)</a></li>
+                <li><a href="https://www.rcrwireless.com/20101124/wireless/itu-finalizes-4g-technologies">RCR Wireless: ITU finalizes 4G technologies (2010)</a></li>
+                <li><a href="https://www.itu.int/en/ITU-R/study-groups/rsg5/rwp5d/imt-2020/Pages/default.aspx">ITU-R: IMT-2020 (5G)</a></li>
+                <li><a href="https://www.internetsociety.org/blog/2013/11/happy-30th-birthday-dns/">Internet Society: Happy 30th Birthday, DNS</a></li>
+            </ul>
         </section>
 {% endblock %}

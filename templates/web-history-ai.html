@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-        <p>The World Wide Web is a system of interlinked documents and resources, accessed over the Internet through browsers, that allows information to be published, linked and navigated using simple point-and-click hyperlinks. The Web is, in fact, only an application on top of that underlying network -- and it didn't arrive until 1989, two decades after the first message was sent on the Internet. It was invented by Tim Berners-Lee, a scientist at CERN, who was trying to solve a much narrower problem: helping physicists at CERN to share research documents and data with each other more easily. What was an internal tool for one research lab became the open, worldwide network of pages we use today after CERN put the software in the public domain in 1993.</p>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>The World Wide Web is a system of interlinked documents and resources, accessed over the Internet through browsers, that allows information to be published, linked and navigated using simple point-and-click hyperlinks. The Web is, in fact, only an application on top of that underlying network -- and it didn't arrive until 1989, two decades after the first message was sent on the Internet. It was invented by Tim Berners-Lee, a scientist at CERN, who was trying to solve a much narrower problem: helping physicists at CERN to share research documents and data with each other more easily. What was an internal tool for one research lab became the open, worldwide network of pages we use today after CERN put the software in the public domain in 1993.  The timeline below follows the Web from the first CERN proposal through the arrival of JavaScript, CSS, Web 2.0, HTML5 and the move to HTTPS, followed by the three key technologies behind it: HTML, HTTP and URLs.</p>
+        </section>
 
         <section id="timeline">
             <h2>Key Milestones</h2>
@@ -40,6 +43,42 @@
                 <p>Established the organization that still sets and maintains Web standards (HTML, CSS, etc.) today.</p>
                 <p>Source: <a href="https://timeline.web.cern.ch/node/401">timeline.web.cern.ch</a></p>
             </article>
+
+            <article>
+                <h3>1995: JavaScript is created at Netscape</h3>
+                <p>Brendan Eich wrote the first prototype at Netscape in 1995. It shipped as LiveScript in a Navigator beta in September 1995 and was renamed JavaScript in December 1995. Web pages could now react to the user instead of being static.</p>
+                <p>Source: <a href="https://speakingjs.com/es5/ch04.html">speakingjs.com</a></p>
+            </article>
+
+            <article>
+                <h3>December 1996: CSS1 becomes a W3C Recommendation</h3>
+                <p>CSS1 was published on December 17, 1996. It let designers separate the look of a page from its HTML content.</p>
+                <p>Source: <a href="https://www.w3.org/TR/CSS1/">w3.org</a></p>
+            </article>
+
+            <article>
+                <h3>June 1997: ECMAScript standardises JavaScript</h3>
+                <p>The first edition of ECMA-262 was published in June 1997, giving JavaScript a vendor-neutral standard so it could work across browsers.</p>
+                <p>Source: <a href="https://ecma-international.org/publications-and-standards/standards/ecma-262/">ecma-international.org</a></p>
+            </article>
+
+            <article>
+                <h3>2005: Web 2.0</h3>
+                <p>Tim O'Reilly's essay "What Is Web 2.0" (September 30, 2005) described the shift of the Web from static pages to a platform for services, user-generated content and social participation.</p>
+                <p>Source: <a href="https://www.oreilly.com/pub/a/web2/archive/what-is-web-20.html">oreilly.com</a></p>
+            </article>
+
+            <article>
+                <h3>October 2014: HTML5 becomes a W3C Recommendation</h3>
+                <p>HTML5 was finalised on October 28, 2014. It added native audio and video, semantic elements and new APIs, reducing the need for plug-ins.</p>
+                <p>Source: <a href="https://www.w3.org/TR/2014/REC-html5-20141028/">w3.org</a></p>
+            </article>
+
+            <article>
+                <h3>2015-2018: HTTPS everywhere</h3>
+                <p>Let's Encrypt issued its first free certificate on September 14, 2015. In February 2018 Google announced that from Chrome 68 (July 2018) all HTTP sites would be marked "Not secure", making encrypted connections the default expectation.</p>
+                <p>Source: <a href="https://security.googleblog.com/2018/02/a-secure-web-is-here-to-stay.html">security.googleblog.com</a></p>
+            </article>
         </section>
 
         <section id="technologies">
@@ -62,5 +101,23 @@
                 <p>The addressing system that gives every page and resource on the Web a unique, findable location.</p>
                 <p>Source: <a href="https://www.w3.org/TR/webarch/">w3.org</a></p>
             </article>
+        </section>
+
+        <section id="references">
+            <h2>References</h2>
+            <ul>
+                <li><a href="https://timeline.web.cern.ch/node/365">CERN Timeline: Information Management proposal (1989)</a></li>
+                <li><a href="https://web30.web.cern.ch/web-history.html">CERN: History of the Web</a></li>
+                <li><a href="https://home.cern/science/computing/birth-web">CERN: The birth of the Web</a></li>
+                <li><a href="https://timeline.web.cern.ch/node/793">CERN Timeline: Mosaic (1993)</a></li>
+                <li><a href="https://timeline.web.cern.ch/node/401">CERN Timeline: W3C founded (1994)</a></li>
+                <li><a href="https://speakingjs.com/es5/ch04.html">Speaking JavaScript: How JavaScript Was Created</a></li>
+                <li><a href="https://www.w3.org/TR/CSS1/">W3C: CSS Level 1 Recommendation (1996)</a></li>
+                <li><a href="https://ecma-international.org/publications-and-standards/standards/ecma-262/">Ecma International: ECMA-262 (ECMAScript)</a></li>
+                <li><a href="https://www.oreilly.com/pub/a/web2/archive/what-is-web-20.html">Tim O'Reilly: What Is Web 2.0 (2005)</a></li>
+                <li><a href="https://www.w3.org/TR/2014/REC-html5-20141028/">W3C: HTML5 Recommendation (2014)</a></li>
+                <li><a href="https://security.googleblog.com/2018/02/a-secure-web-is-here-to-stay.html">Google Security Blog: A secure web is here to stay (2018)</a></li>
+                <li><a href="https://www.w3.org/TR/webarch/">W3C: Architecture of the World Wide Web</a></li>
+            </ul>
         </section>
 {% endblock %}

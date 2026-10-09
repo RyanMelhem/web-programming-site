@@ -7,7 +7,7 @@
   <h2>Engineering Student Profile</h2>
   <p>Complete this form to provide information about your academic background, technical skills, internship experience, and Final Year Project preferences.</p>
 
-  <form action="{{ url_for('submit_profile') }}" method="post">
+  <form action="{{ url_for('submit_profile') }}" method="post" id="profile-form">
     <fieldset>
       <legend>1. Personal Information</legend>
 
@@ -18,7 +18,7 @@
       <input type="text" id="fullname" name="fullname" required maxlength="50">
 
       <label for="email">USEK Email:</label>
-      <input type="email" id="email" name="email" required pattern="[a-zA-Z0-9._%+-]+@net\.usek\.edu\.lb" title="Enter a valid USEK email address (e.g., john.doe@net.usek.edu.lb)">
+      <input type="email" id="email" name="email" required pattern="[a-zA-Z0-9._%+\-]+@net\.usek\.edu\.lb" title="Enter a valid USEK email address (e.g., john.doe@net.usek.edu.lb)">
 
       <label for="phone">Mobile Number:</label>
       <input type="tel" id="phone" name="phone" required pattern="\+?[0-9\s]{8,15}" placeholder="+961 70 123456" title="Enter a valid mobile number (e.g. +961 70 123456)">
@@ -181,4 +181,12 @@
     <button type="submit">Submit Profile</button>
     <button type="reset">Clear Form</button>
   </form>
+  <section id="review-panel" class="review-panel">
+    <h2>Review Your Profile</h2>
+    <p>Please review your work and make sure to double-check all the information you have provided before submitting.</p>
+    <div id="review-content"></div>
+    <button id="edit-btn" type="button">Edit</button>
+    <button id="confirm-btn" type="button">Confirm and Submit</button>
+  </section>
+  <script src="{{ url_for('static', filename='profile.js') }}"></script>
 {% endblock %}

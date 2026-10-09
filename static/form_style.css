@@ -147,3 +147,13 @@ fieldset {
         padding: var(--spacing-md);
     }
 }
+.review-panel {
+    display: none;
+    background-color: 
+    var(--bg-elevated); 
+    border: none; 
+    border-radius: 
+    var(--radius); 
+    padding: var(--spacing-md); 
+    margin-top: var(--spacing-md);}
+.review-panel.open {display: block;}

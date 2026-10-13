@@ -40,6 +40,9 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+from quiz_api import init_quiz
+init_quiz(app)
+
 # Links shown on the home page and on the plain Week 1 page.
 WEEKLY_WORK = [
     {"week": 1, "title": "Original portfolio home page (plain HTML)", "url": "/week1"},

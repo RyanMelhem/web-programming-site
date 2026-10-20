@@ -50,6 +50,7 @@ WEEKLY_WORK = [
     {"week": 2, "title": "History of the Web", "url": "/web-history"},
     {"week": 2, "title": "History of the Internet (AI)", "url": "/internet-history-ai"},
     {"week": 2, "title": "History of the Web (AI)", "url": "/web-history-ai"},
+    {"week": 3, "title": "Templates and Responsive Design", "url": "/week3"},
     {"week": 4, "title": "Engineering Student Profile", "url": "/submit-profile"},
     {"week": 5, "title": "JavaScript app", "url": "/quiz"},
     {"week": 6, "title": "Student Profile with Review Step", "url": "/profile-review"},
@@ -67,6 +68,12 @@ def home():
 def week1():
     """Week 1: the original plain-HTML home page, with no CSS."""
     return render_template("week1.html", weekly_work=WEEKLY_WORK)
+
+
+@app.route("/week3")
+def week3():
+    """Week 3: base.html template inheritance and the responsive design system."""
+    return render_template("week3.html")
 
 
 @app.route("/internet-history")

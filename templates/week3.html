@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% block title %}Week 3 — Templates and Responsive Design{% endblock %}
+{% block head %}
+<style>
+  /* Styles used only on this page. Everything else comes from style.css. */
+  .w3-code {
+    background-color: var(--text);
+    color: #f7f5f0;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .w3-note {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  /* CSS variables: colour swatches */
+  .w3-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: var(--spacing-sm);
+  }
+  .w3-swatch {
+    border-radius: var(--radius);
+    border: 1px solid var(--text-muted);
+    overflow: hidden;
+    background-color: var(--bg);
+  }
+  .w3-swatch span {
+    display: block;
+    height: 60px;
+  }
+  .w3-swatch p {
+    margin: 0;
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    font-family: monospace;
+  }
+
+  /* Flexbox demo */
+  .w3-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    background-color: var(--bg-elevated);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+  }
+  .w3-box {
+    background-color: var(--primary);
+    color: #ffffff;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+  }
+
+  /* Grid demo */
+  .w3-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  .w3-tile {
+    background-color: var(--bg-elevated);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm);
+    text-align: center;
+    font-weight: 600;
+  }
+
+  /* Media queries demo: only one badge is visible at a time */
+  .w3-screen {
+    text-align: center;
+    background-color: var(--primary);
+    color: #ffffff;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    font-weight: 600;
+  }
+  .w3-tablet, .w3-desktop { display: none; }
+
+  @media (min-width: 600px) {
+    .w3-phone { display: none; }
+    .w3-tablet { display: inline; }
+  }
+  @media (min-width: 1024px) {
+    .w3-tablet { display: none; }
+    .w3-desktop { display: inline; }
+  }
+</style>
+{% endblock %}
+{% block content %}
+  <section>
+    <h2>Week 3 — Templates and Responsive Design</h2>
+    <p>Week 3 did not add a new page. It changed how the whole site is built. I moved the parts every page shares into one template, <code>base.html</code>, and I wrote a responsive design system in <code>style.css</code> using CSS variables, Flexbox, Grid and media queries. This page shows each of those parts.</p>
+  </section>
+
+  <section>
+    <h2>1. Template inheritance with base.html</h2>
+    <p>Before Week 3, every page repeated the same header, navigation and footer. Now <code>base.html</code> holds them once and leaves empty <strong>blocks</strong> for each page to fill in.</p>
+    <pre class="w3-code">{% raw %}&lt;!-- base.html --&gt;
+&lt;title&gt;{% block title %}My Web Programming Portfolio{% endblock %}&lt;/title&gt;
+&lt;header&gt; ... navigation ... &lt;/header&gt;
+&lt;main&gt;
+    {% block content %}{% endblock %}
+&lt;/main&gt;
+&lt;footer&gt; ... &lt;/footer&gt;{% endraw %}</pre>
+    <p>Each page only writes what is different about it:</p>
+    <pre class="w3-code">{% raw %}&lt;!-- internet-history.html --&gt;
+{% extends "base.html" %}
+{% block content %}
+    &lt;h2&gt;History of the Internet&lt;/h2&gt;
+    ...
+{% endblock %}{% endraw %}</pre>
+    <p>Flask fills the blocks on the server before the page is sent, so the browser receives one complete HTML page. Changing the navigation in <code>base.html</code> updates every page on the site at once. This page uses the same template too.</p>
+  </section>
+
+  <section>
+    <h2>2. CSS variables</h2>
+    <p>The colours, fonts, spacing and corner radius are defined once in <code>:root</code> and reused everywhere with <code>var(...)</code>. Changing one value changes the whole site.</p>
+    <div class="w3-swatches">
+      <div class="w3-swatch"><span style="background-color: var(--bg);"></span><p>--bg</p></div>
+      <div class="w3-swatch"><span style="background-color: var(--bg-elevated);"></span><p>--bg-elevated</p></div>
+      <div class="w3-swatch"><span style="background-color: var(--text);"></span><p>--text</p></div>
+      <div class="w3-swatch"><span style="background-color: var(--text-muted);"></span><p>--text-muted</p></div>
+      <div class="w3-swatch"><span style="background-color: var(--primary);"></span><p>--primary</p></div>
+      <div class="w3-swatch"><span style="background-color: var(--primary-hover);"></span><p>--primary-hover</p></div>
+    </div>
+    <pre class="w3-code">:root {
+    --primary: #1b6b6b;
+    --radius: 10px;
+}
+nav a:hover {
+    background-color: var(--primary);
+}</pre>
+  </section>
+
+  <section>
+    <h2>3. Flexbox</h2>
+    <p>The navigation bar at the top is a Flexbox row. <code>flex-wrap: wrap</code> lets the buttons move to a new line when the screen is too narrow, and <code>gap</code> keeps the same space between them. The boxes below use the same rules. Make the window narrower to see them wrap.</p>
+    <div class="w3-flex">
+      <span class="w3-box">Home</span>
+      <span class="w3-box">Week 1</span>
+      <span class="w3-box">Week 2</span>
+      <span class="w3-box">Week 3</span>
+      <span class="w3-box">Week 4</span>
+      <span class="w3-box">Week 5</span>
+      <span class="w3-box">Week 6</span>
+      <span class="w3-box">Week 7</span>
+    </div>
+    <pre class="w3-code">nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+}</pre>
+  </section>
+
+  <section>
+    <h2>4. CSS Grid</h2>
+    <p>The Weekly Work cards on the home page are a Grid. <code>repeat(auto-fit, minmax(240px, 1fr))</code> means: fit as many columns as there is room for, each at least 240px wide, and share the leftover space equally. The browser chooses the number of columns by itself, without a media query.</p>
+    <div class="w3-grid">
+      <div class="w3-tile">1</div>
+      <div class="w3-tile">2</div>
+      <div class="w3-tile">3</div>
+      <div class="w3-tile">4</div>
+      <div class="w3-tile">5</div>
+      <div class="w3-tile">6</div>
+    </div>
+    <pre class="w3-code">main ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}</pre>
+  </section>
+
+  <section>
+    <h2>5. Media queries (mobile first)</h2>
+    <p>The base styles are written for phones first. Media queries then add changes as the screen gets wider: from 600px (tablet) the headings grow and the cards go into several columns, and from 1024px (desktop) the headings and navigation buttons grow again.</p>
+    <p class="w3-screen">
+      <span class="w3-phone">You are on a phone-sized screen (under 600px)</span>
+      <span class="w3-tablet">You are on a tablet-sized screen (600px to 1023px)</span>
+      <span class="w3-desktop">You are on a desktop-sized screen (1024px or wider)</span>
+    </p>
+    <p class="w3-note">Resize the window and this box changes. Only CSS is used here, no JavaScript.</p>
+    <pre class="w3-code">/* Phone: the default */
+main ul { grid-template-columns: 1fr; }
+
+/* Tablet and up */
+@media (min-width: 600px) {
+    h1 { font-size: 1.8rem; }
+    main ul { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    h1 { font-size: 2rem; }
+}</pre>
+  </section>
+
+  <section>
+    <h2>6. Sticky header and fixed footer</h2>
+    <p>The header uses <code>position: sticky</code> with <code>top: 0</code>, so it stays at the top of the screen while you scroll. The footer uses <code>position: fixed</code> with <code>bottom: 0</code>, so it is always visible. <code>main</code> has extra bottom padding so the footer never covers the last lines of a page.</p>
+  </section>
+{% endblock %}

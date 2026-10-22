@@ -157,3 +157,10 @@ fieldset {
     padding: var(--spacing-md); 
     margin-top: var(--spacing-md);}
 .review-panel.open {display: block;}
+/* Week 8: server-side validation error messages */
+.error {
+    display: block;
+    color: #b3261e;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+}

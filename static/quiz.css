@@ -147,3 +147,18 @@ button {
 #resultsPanel {
     display: none;
 }
+
+/* ---- Week 12: loading and error states for the Live Quiz ------------------
+   The error shows as a red box with a left border, so it stands out from
+   normal text. Same red as the form errors (#b3261e on #fde7e9 = about 5.5:1 contrast, passes AA). */
+#loading {
+    font-style: italic;
+}
+
+#error {
+    color: #b3261e;
+    background-color: #fde7e9;
+    border-left: 4px solid #b3261e;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+}

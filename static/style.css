@@ -73,6 +73,12 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Week 12: links inside text are underlined, so they don't rely on colour alone */
+main p a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 /* Sticky header */
 header {
     position: sticky;
@@ -116,7 +122,6 @@ main {
     max-width: 800px;
     margin: 0 auto;
     padding: var(--spacing-md);
-    padding-bottom: 6rem; /* keeps content clear of the fixed footer */
 }
 
 section {
@@ -144,19 +149,14 @@ li {
     margin-bottom: 0.6rem;
 }
 
-/* Sticky (fixed) footer */
+/* Footer sits at the end of the page (Week 12: no longer fixed) */
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     background-color: var(--bg);
     border-top: 1px solid var(--bg-elevated);
     color: var(--text-muted);
     font-size: 0.8rem;
     text-align: center;
     padding: 0.6rem var(--spacing-sm);
-    z-index: 100;
 }
 
 footer p {

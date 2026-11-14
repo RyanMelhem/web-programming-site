@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Week 12 — Responsive Design, UI/UX &amp; Accessibility{% endblock %}
+{% block head %}
+<style>
+  /* Styles used only on this page. Everything else comes from style.css. */
+  .wk-code {
+    background-color: var(--text);
+    color: #f7f5f0;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  /* style.css turns every list in <main> into grid cards; these lists are normal bullets */
+  main ul.wk-list {
+    display: block;
+    list-style: disc;
+    padding-left: 1.3rem;
+  }
+  main ul.wk-list li {
+    background: none;
+    padding: 0;
+    margin-bottom: 0.4rem;
+  }
+  .wk-table-wrap { overflow-x: auto; }
+  .wk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  .wk-table th, .wk-table td {
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid var(--bg-elevated);
+    vertical-align: top;
+  }
+  .wk-table th {
+    background-color: var(--bg-elevated);
+    color: var(--text);
+  }
+  .wk-key {
+    background-color: var(--bg-elevated);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+  }
+  .wk-key p { margin: 0; color: var(--text); }
+</style>
+{% endblock %}
+{% block content %}
+  <section>
+    <h2>Week 12 — Responsive Design, UI/UX &amp; Accessibility</h2>
+    <p>Week 12 was about making a site work for <strong>every screen</strong> and <strong>every person</strong>: phones as well as laptops, keyboard users as well as mouse users, screen-reader users as well as sighted users. The method was <em>audit first, fix, then re-audit</em>, so every change is measured instead of guessed. This page records what was found on this portfolio site and what was changed.</p>
+  </section>
+
+  <section>
+    <h2>1. The three areas</h2>
+    <ul class="wk-list">
+      <li><strong>Responsive design</strong>: one site that adapts to any screen: the viewport tag, fluid widths (<code>width:100%</code> + <code>max-width</code>), <code>rem</code> units, media queries, a responsive grid and images that never overflow.</li>
+      <li><strong>UI / UX</strong>: clear visual hierarchy and spacing, real labels, visible <code>:hover</code> / <code>:focus</code> / <code>:disabled</code> states, and a <em>loading</em>, <em>success</em> and <em>error</em> state for every data feature.</li>
+      <li><strong>Accessibility (a11y)</strong>: semantic HTML, labels linked to inputs, full keyboard use with a visible focus outline and a skip link, contrast of at least 4.5:1, alt text, and <code>role="alert"</code> for messages that appear.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2. Audit before the changes</h2>
+    <p>Run on the live Render site, Lighthouse in <strong>Mobile</strong> mode (emulated Moto G Power).</p>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Page</th><th>Performance</th><th>Accessibility</th><th>Best Practices</th><th>SEO</th></tr>
+        <tr><td>Home</td><td>89</td><td>100</td><td>100</td><td>90</td></tr>
+        <tr><td>Student Profile (Validated)</td><td>100</td><td>100</td><td>100</td><td>90</td></tr>
+      </table>
+    </div>
+    <p><strong>WAVE</strong>: 0 errors, 0 contrast errors, 0 alerts. The only automated issue was SEO: <em>"Document does not have a meta description"</em>.</p>
+    <div class="wk-key"><p>Automated tools only check what a program can detect. They cannot tell whether a phone user can see the page past the header, whether there is a skip link, or whether a failed request leaves a frozen screen. Most of this week's fixes came from the manual checklist, not from the scores.</p></div>
+  </section>
+
+  <section>
+    <h2>3. Design decisions</h2>
+    <p>Decided before asking the AI to help implement anything:</p>
+    <ul class="wk-list">
+      <li><strong>Header on phones</strong>: the 14 navigation buttons filled most of a phone screen, so they collapse behind a <strong>☰ Menu</strong> button on small screens. The header stays sticky.</li>
+      <li><strong>Footer</strong>: no longer fixed to the bottom of the screen; it sits after the content like a normal footer.</li>
+      <li><strong>Links in text</strong>: always underlined inside paragraphs, so a link is never shown by colour alone. Navigation buttons and Weekly Work cards already look clickable, so they keep the hover underline.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. Responsive fixes</h2>
+    <p><strong>Collapsible menu.</strong> A real <code>&lt;button&gt;</code> is linked to the nav with <code>aria-controls</code>, and <code>aria-expanded</code> tells screen readers whether the menu is open:</p>
+    <pre class="wk-code">&lt;button type="button" class="nav-toggle"
+        aria-expanded="false" aria-controls="site-nav"&gt;☰ Menu&lt;/button&gt;
+&lt;nav id="site-nav" aria-label="Main"&gt; ... &lt;/nav&gt;</pre>
+    <p>The script lives in <code>static/nav.js</code>, not in an <code>onclick</code>, because the Week 11 Content-Security-Policy blocks inline JavaScript:</p>
+    <pre class="wk-code">document.documentElement.classList.add('js');
+const button = document.querySelector('.nav-toggle');
+const nav = document.getElementById('site-nav');
+button.addEventListener('click', function () {
+    const isOpen = nav.classList.toggle('is-open');
+    button.setAttribute('aria-expanded', isOpen);
+});</pre>
+    <p>The CSS hides the nav only when <code>&lt;html&gt;</code> has the class <code>js</code>. If JavaScript fails to load, the button stays hidden and the full nav stays visible, so the site never has a menu that cannot be opened.</p>
+    <p><strong>Footer</strong> moved from <code>position: fixed</code> into the normal page flow, which also removed the 6rem padding that kept content clear of it.</p>
+    <p><strong>Images</strong>: <code>img { max-width: 100%; height: auto; }</code> was added so a future image can never overflow a phone screen. The site currently has no images, so there was no alt text to fix.</p>
+    <p>Already in place from Week 3: the viewport tag, sizes in <code>rem</code>, mobile-first media queries, a capped <code>main</code> width and the <code>repeat(auto-fit, minmax(240px, 1fr))</code> grid for Weekly Work.</p>
+  </section>
+
+  <section>
+    <h2>5. UI / UX fixes</h2>
+    <ul class="wk-list">
+      <li><strong>Live Quiz error state</strong>: the error message was plain grey text that looked like any paragraph. It is now a red box with a red bar on the left (contrast about 5.5:1), and "Loading…" is shown in italics.</li>
+      <li><strong>States already present</strong>: the Live Quiz already had loading, success and error states from Week 7, and the quiz buttons already had <code>:hover</code> and <code>:disabled</code> styles.</li>
+      <li><strong>Meta description</strong> added in <code>base.html</code>, which fixes the SEO issue on every page at once.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6. Accessibility fixes</h2>
+    <ul class="wk-list">
+      <li><strong>Skip link</strong>: the first thing the Tab key reaches is a hidden "Skip to main content" link. It appears when focused and jumps to <code>&lt;main id="main"&gt;</code>, past the 14 navigation links.</li>
+      <li><strong>Visible focus</strong>: links, buttons and form fields get a thick 3px outline with <code>:focus-visible</code>, so keyboard users always see where they are. The outline is never removed.</li>
+      <li><strong>One main landmark</strong>: both quiz pages had their own <code>&lt;main&gt;</code> inside the one from <code>base.html</code>. They now use a <code>&lt;div class="container"&gt;</code>.</li>
+      <li><strong>Announced messages</strong>: the Live Quiz error has <code>role="alert"</code>, "Loading…" has <code>role="status"</code>, and the server-validation summary on the profile form has <code>role="alert"</code>, so screen readers read them out when they appear.</li>
+      <li><strong>Links in text underlined</strong>: links no longer rely on colour alone.</li>
+      <li><strong>Already correct</strong>: <code>header</code> / <code>nav</code> / <code>main</code> / <code>footer</code>, real buttons, and a <code>&lt;label for&gt;</code> on every form field, with <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code> around the radio and checkbox groups.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Testing</h2>
+    <ul class="wk-list">
+      <li>Chrome device toolbar at phone, tablet and desktop widths: menu closed and open, footer position, no sideways scrolling.</li>
+      <li>Keyboard only: Tab reaches the skip link first, Enter jumps to the content, the menu opens with Enter, and the focus outline is visible everywhere.</li>
+      <li>Error states: stopping the server and clicking <em>Next</em> in the Live Quiz shows the red error box instead of a frozen page; submitting the validated form empty shows the error summary.</li>
+    </ul>
+  </section>
+{% endblock %}

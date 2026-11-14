@@ -89,6 +89,8 @@ WEEKLY_WORK = [
     {"week": 6, "title": "Student Profile with Review Step", "url": "/profile-review"},
     {"week": 7, "title": "Live Quiz with Fetch", "url": "/live-quiz"},
     {"week": 8, "title": "Validate the Profile Form on the Server", "url": "/profile-validated"},
+    {"week": 9, "title": "Team Project, Accounts and Security Basics", "url": "/week9"},
+    {"week": 10, "title": "Working with the Database (CRUD)", "url": "/week10"},
 ]
 
 
@@ -108,6 +110,18 @@ def week1():
 def week3():
     """Week 3: base.html template inheritance and the responsive design system."""
     return render_template("week3.html")
+
+
+@app.route("/week9")
+def week9():
+    """Week 9: team project kickoff, user accounts and security basics."""
+    return render_template("week9.html")
+
+
+@app.route("/week10")
+def week10():
+    """Week 10: working with the database (CRUD, queries, ownership check)."""
+    return render_template("week10.html")
 
 
 @app.route("/internet-history")

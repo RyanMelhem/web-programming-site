@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}Week 9 — Team Project, Accounts and Security Basics{% endblock %}
+{% block head %}
+<style>
+  /* Styles used only on this page. Everything else comes from style.css. */
+  .wk-code {
+    background-color: var(--text);
+    color: #f7f5f0;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .wk-note {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+  /* style.css turns every list in <main> into grid cards; these lists are normal bullets */
+  main ul.wk-list {
+    display: block;
+    list-style: disc;
+    padding-left: 1.3rem;
+  }
+  main ul.wk-list li {
+    background: none;
+    padding: 0;
+    margin-bottom: 0.4rem;
+  }
+  .wk-table-wrap { overflow-x: auto; }
+  .wk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  .wk-table th, .wk-table td {
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid var(--bg-elevated);
+    vertical-align: top;
+  }
+  .wk-table th {
+    background-color: var(--bg-elevated);
+    color: var(--text);
+  }
+  .wk-table code { white-space: nowrap; }
+  .wk-key {
+    background-color: var(--bg-elevated);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+  }
+  .wk-key p { margin: 0; color: var(--text); }
+</style>
+{% endblock %}
+{% block content %}
+  <section>
+    <h2>Week 9 — Team Project, Accounts and Security Basics</h2>
+    <p>Week 9 started the team project. Until then, every page on this site was built alone; from Week 9 on, the main work happens in a team repository. The week also introduced user accounts (sign-up, log-in, log-out) and the security basics that every site with accounts needs: hashed passwords, protected routes, safe session cookies, CSRF protection and HTTPS.</p>
+    <p class="wk-note">This page summarises what Week 9 covered. The team project's code lives in the team repository, not on this portfolio site.</p>
+  </section>
+
+  <section>
+    <h2>1. The team project</h2>
+    <p>Our team of three is building <strong>Brom el ARD</strong>, an AI travel-planning companion: users browse destinations and activities with prices, previews and ratings, save favourites, and ask an AI travel advisor to plan a trip from a simple prompt.</p>
+    <p>Before writing code, the team wrote requirements in two groups:</p>
+    <ul class="wk-list">
+      <li><strong>Functional requirements</strong> — what the site does (search destinations, save favourites, log in...).</li>
+      <li><strong>Non-functional requirements</strong> — how well and how safely it does it (security, performance, usability). Security requirements belong here, next to the functional ones, so security is designed in from the start instead of added at the end.</li>
+    </ul>
+    <p>Thinking like an attacker for each feature — what is the input, where does it go, who can reach it — is called <strong>threat thinking</strong>, and it shapes those requirements.</p>
+  </section>
+
+  <section>
+    <h2>2. Sign-up and log-in with sessions</h2>
+    <p>HTTP does not remember who you are between requests. After a successful log-in, Flask stores the user's id in the <strong>session</strong>, a signed cookie that the browser sends back with every request:</p>
+    <pre class="wk-code">{% raw %}# on successful log-in
+session.clear()                 # drop any old session first
+session["user_id"] = user.id    # now every request knows who you are
+
+# on log-out
+session.clear()                 # forget the user completely{% endraw %}</pre>
+    <p>The session cookie is signed with the app's <code>SECRET_KEY</code>, so a user cannot edit it to pretend to be someone else — as long as that key is long, random and kept secret in an environment variable.</p>
+  </section>
+
+  <section>
+    <h2>3. Password hashing</h2>
+    <p>Passwords are never stored as they were typed. They are stored as a <strong>salted, slow, one-way hash</strong>:</p>
+    <pre class="wk-code">from werkzeug.security import generate_password_hash, check_password_hash
+
+# sign-up: store the hash, never the password
+user.password_hash = generate_password_hash(password)
+
+# log-in: compare what was typed with the stored hash -> True / False
+check_password_hash(user.password_hash, password)</pre>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Property</th><th>Why it matters</th></tr>
+        <tr><td><strong>One-way</strong></td><td>The hash cannot be turned back into the password.</td></tr>
+        <tr><td><strong>Salted</strong></td><td>A random value per user, so two users with the same password get different hashes and precomputed "rainbow tables" are useless.</td></tr>
+        <tr><td><strong>Slow</strong></td><td>Each guess is expensive, so mass password guessing becomes impractical.</td></tr>
+      </table>
+    </div>
+    <p>If the database ever leaks, attackers get hashes, not passwords.</p>
+  </section>
+
+  <section>
+    <h2>4. Protecting routes with @login_required</h2>
+    <p>Pages that belong to a logged-in user are protected by a <strong>decorator</strong> that runs before the route. If nobody is logged in, it redirects to the log-in page instead of running the route:</p>
+    <pre class="wk-code">@app.route("/favorites")
+@login_required          # checks that session["user_id"] is set
+def favorites():
+    ...</pre>
+    <p>This is <strong>authentication</strong>: <em>who are you?</em> Week 10 added the second half, <strong>authorization</strong>: <em>is this row yours?</em></p>
+  </section>
+
+  <section>
+    <h2>5. Generic log-in errors</h2>
+    <p>A log-in form should never say "no such user" for one case and "wrong password" for the other. That tells an attacker which emails have accounts. One message is used for every failure:</p>
+    <pre class="wk-code">error = "Email or password is incorrect."</pre>
+  </section>
+
+  <section>
+    <h2>6. Safe session cookies</h2>
+    <p>The session cookie gets three safety flags and a time limit:</p>
+    <pre class="wk-code">app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,     # JavaScript cannot read the cookie (blocks XSS theft)
+    SESSION_COOKIE_SECURE=True,       # only sent over HTTPS
+    SESSION_COOKIE_SAMESITE="Lax",    # limits sending it from other sites (helps against CSRF)
+    PERMANENT_SESSION_LIFETIME=timedelta(minutes=30),
+)</pre>
+  </section>
+
+  <section>
+    <h2>7. CSRF protection</h2>
+    <p><strong>Cross-Site Request Forgery</strong> tricks a logged-in user's browser into submitting a request they never intended — the browser attaches their session cookie automatically. The fix is a secret token in every form that changes data, which another site cannot know:</p>
+    <pre class="wk-code">{% raw %}from flask_wtf.csrf import CSRFProtect
+csrf = CSRFProtect(app)   # every state-changing POST now needs a token
+
+&lt;form method="post"&gt;
+  &lt;input type="hidden" name="csrf_token" value="{{ csrf_token() }}"&gt;
+  ...
+&lt;/form&gt;{% endraw %}</pre>
+  </section>
+
+  <section>
+    <h2>8. HTTPS</h2>
+    <p>HTTPS encrypts the connection, so passwords and session cookies cannot be read on the network. Render serves every site over HTTPS automatically. Hashing protects passwords <em>stored</em> in the database; HTTPS protects them <em>in transit</em> — a log-in form must never be sent over plain <code>http://</code>.</p>
+  </section>
+
+  <section>
+    <h2>Summary</h2>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Topic</th><th>What it protects against</th></tr>
+        <tr><td>Requirements and threat thinking</td><td>Insecure design: security planned from the start</td></tr>
+        <tr><td>Password hashing</td><td>Leaked databases revealing real passwords</td></tr>
+        <tr><td><code>@login_required</code></td><td>Visitors reaching private pages without logging in</td></tr>
+        <tr><td>Generic log-in error</td><td>Attackers learning which emails have accounts</td></tr>
+        <tr><td><code>session.clear()</code></td><td>Old sessions being reused after log-in or log-out</td></tr>
+        <tr><td>Cookie flags</td><td>Session theft through scripts, plain HTTP, or other sites</td></tr>
+        <tr><td>CSRF tokens</td><td>Other sites submitting forms as the user</td></tr>
+        <tr><td>HTTPS</td><td>Passwords and cookies being read on the network</td></tr>
+      </table>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block title %}Week 10 — Working with the Database{% endblock %}
+{% block head %}
+<style>
+  /* Styles used only on this page. Everything else comes from style.css. */
+  .wk-code {
+    background-color: var(--text);
+    color: #f7f5f0;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .wk-note {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+  /* style.css turns every list in <main> into grid cards; these lists are normal bullets */
+  main ul.wk-list {
+    display: block;
+    list-style: disc;
+    padding-left: 1.3rem;
+  }
+  main ul.wk-list li {
+    background: none;
+    padding: 0;
+    margin-bottom: 0.4rem;
+  }
+  .wk-table-wrap { overflow-x: auto; }
+  .wk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  .wk-table th, .wk-table td {
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid var(--bg-elevated);
+    vertical-align: top;
+  }
+  .wk-table th {
+    background-color: var(--bg-elevated);
+    color: var(--text);
+  }
+  .wk-table code { white-space: nowrap; }
+  .wk-key {
+    background-color: var(--bg-elevated);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+  }
+  .wk-key p { margin: 0; color: var(--text); }
+</style>
+{% endblock %}
+{% block content %}
+  <section>
+    <h2>Week 10 — Working with the Database: CRUD, Queries and Data-Driven Pages</h2>
+    <p>Week 10 was about the data layer of the team project: describing tables in Python, then creating, reading, updating and deleting rows safely. It also introduced the most important security check for any site where users own data: making sure a user can only see and change their <em>own</em> rows.</p>
+    <p class="wk-note">The examples use the team project's <code>Favorite</code> table, where each row is an item a user saved.</p>
+  </section>
+
+  <section>
+    <h2>1. Where each file fits</h2>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>File</th><th>Role</th></tr>
+        <tr><td><code>app.py</code></td><td><strong>The controller</strong>: all the routes</td></tr>
+        <tr><td><code>models.py</code></td><td><strong>The data layer</strong>: tables written as Python classes</td></tr>
+        <tr><td><code>api_client.py</code></td><td>All calls to the external API</td></tr>
+        <tr><td><code>validators.py</code></td><td>Server-side input checks</td></tr>
+        <tr><td><code>reset_db.py</code></td><td>Developer tool: drop and recreate every table</td></tr>
+        <tr><td><code>templates/</code></td><td><strong>The view</strong>: the Jinja pages</td></tr>
+        <tr><td><code>static/</code></td><td>CSS, JavaScript and images</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. The ORM: Python objects become database rows</h2>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Python</th><th>Database</th></tr>
+        <tr><td><code>db = SQLAlchemy()</code></td><td>The database connection</td></tr>
+        <tr><td><code>class Favorite(db.Model)</code></td><td>The table <code>favorite</code></td></tr>
+        <tr><td>one <code>Favorite()</code> object</td><td>One row</td></tr>
+        <tr><td><code>fav.item_title</code></td><td>The column <code>item_title</code></td></tr>
+      </table>
+    </div>
+    <p><strong>SQLAlchemy</strong> is an <strong>ORM</strong> (Object-Relational Mapper): it translates between Python objects and database rows, so no SQL has to be written by hand. Changing <code>fav.item_title</code> only changes the object in memory until the change is committed.</p>
+  </section>
+
+  <section>
+    <h2>3. Setting up the database in 5 steps</h2>
+    <pre class="wk-code"># models.py
+db = SQLAlchemy()                     # 1. create the db object (not connected yet)
+class User(db.Model): ...             # 2. describe each table as a class
+
+# app.py
+app.config["SQLALCHEMY_DATABASE_URI"] = database_uri()   # 3. where is the database?
+db.init_app(app)                      # 4. connect db to this app
+with app.app_context():
+    db.create_all()                   # 5. create the tables that don't exist yet</pre>
+    <p>There is one <code>db</code> object in the whole project: created once in <code>models.py</code>, connected once in <code>app.py</code>, and imported everywhere else with <code>from models import db</code>. The same code uses PostgreSQL on Render and a local SQLite file on a laptop.</p>
+    <div class="wk-key"><p><code>db.create_all()</code> never changes a table that already exists. After adding a column to a model, <code>reset_db.py</code> (drop + create) must be run, otherwise the app fails with "no such column".</p></div>
+  </section>
+
+  <section>
+    <h2>4. Describing a table</h2>
+    <pre class="wk-code">class Favorite(db.Model):
+    id         = db.Column(db.Integer, primary_key=True)
+    item_id    = db.Column(db.String(50), nullable=False)   # the API's id
+    item_title = db.Column(db.String(255))
+    item_image = db.Column(db.String(500))
+    user_id    = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    __table_args__ = (db.UniqueConstraint("user_id", "item_id"),)   # no duplicates</pre>
+    <ul class="wk-list">
+      <li><code>primary_key=True</code>: the unique id of each row.</li>
+      <li><code>nullable=False</code>: the column is required.</li>
+      <li><code>db.ForeignKey("user.id")</code>: links each favourite to the user who saved it.</li>
+      <li><code>UniqueConstraint("user_id", "item_id")</code>: the same user cannot save the same item twice. It covers two columns together, so it goes in <code>__table_args__</code>, where table-level rules live.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. CRUD: Create, Read, Update, Delete</h2>
+    <p><strong>Writing</strong> goes through <code>db.session</code>, a pending list of changes:</p>
+    <pre class="wk-code">db.session.add(obj)       # stage a new row       (Create)
+db.session.delete(obj)    # stage a removal       (Delete)
+db.session.commit()       # write every staged change ("save")
+db.session.rollback()     # throw the pending list away ("undo")</pre>
+    <ul class="wk-list">
+      <li><strong>Create</strong>: build a new object, <code>add</code> it, then <code>commit</code>.</li>
+      <li><strong>Update</strong>: change the attribute of a loaded row, then <code>commit</code> (no <code>add</code>: the session already tracks it).</li>
+      <li><strong>Delete</strong>: <code>delete</code> the loaded row, then <code>commit</code>.</li>
+    </ul>
+    <div class="wk-key"><p>Nothing is saved until <code>db.session.commit()</code>, which writes all pending changes as one unit.</p></div>
+    <p><strong>Reading</strong> goes through <code>Model.query</code>. The query is built step by step and only runs at the end:</p>
+    <pre class="wk-code">Favorite.query
+    .filter_by(user_id=3)            # narrow it
+    .order_by(Favorite.item_title)   # sort it A to Z
+    .all()                           # NOW it runs</pre>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Ending</th><th>Returns</th></tr>
+        <tr><td><code>.all()</code></td><td>A list of every match</td></tr>
+        <tr><td><code>.first()</code></td><td>One row, or <code>None</code></td></tr>
+        <tr><td><code>.count()</code></td><td>How many rows match</td></tr>
+        <tr><td><code>.get_or_404(id)</code></td><td>One row by id, or a clean 404 page</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>6. Querying</h2>
+    <ul class="wk-list">
+      <li><code>filter_by(user_id=3, item_id="52772")</code>: short form for simple equality, conditions joined with AND.</li>
+      <li><code>filter(Favorite.rating &gt;= 4)</code>: for real comparisons such as greater-than or not-equal.</li>
+      <li><code>.order_by(Favorite.id.desc())</code> sorts newest first, and <code>.limit(10)</code> keeps the first 10.</li>
+      <li><code>get_or_404(id)</code> is used whenever a route takes an id in the URL: a missing id gives a 404 instead of a crash.</li>
+    </ul>
+    <p>A case-insensitive search of the user's own saved items, where <code>%</code> means "anything here":</p>
+    <pre class="wk-code">q = request.args.get("q", "").strip()
+results = (Favorite.query
+           .filter_by(user_id=session["user_id"])          # only this user's rows
+           .filter(Favorite.item_title.ilike(f"%{q}%"))   # title contains q
+           .all())</pre>
+  </section>
+
+  <section>
+    <h2>7. The ownership check (the security idea of the week)</h2>
+    <pre class="wk-code">fav = Favorite.query.get_or_404(fav_id)       # the row EXISTS...
+if fav.user_id != session["user_id"]:          # ...but is it YOURS?
+    abort(403)</pre>
+    <p><code>get_or_404</code> proves the row exists, not that it belongs to the user. Without this check, a logged-in user could open <code>/favorites/42/edit</code>, change 42 to 43 in the address bar, and edit someone else's data. Hiding the Edit link does nothing, because anyone can type the URL. This bug is called <strong>IDOR</strong> (Insecure Direct Object Reference), one of the most common real-world web vulnerabilities.</p>
+    <div class="wk-key"><p>Every route that loads a row by id and then shows or changes private data needs an ownership check.</p></div>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Status code</th><th>Meaning</th></tr>
+        <tr><td><strong>401</strong> Unauthorized</td><td>Not logged in (<code>@login_required</code> redirects to log-in)</td></tr>
+        <tr><td><strong>403</strong> Forbidden</td><td>Logged in, but the row is not yours</td></tr>
+        <tr><td><strong>404</strong> Not Found</td><td>The row does not exist</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>8. Handling what goes wrong</h2>
+    <pre class="wk-code">from sqlalchemy.exc import IntegrityError
+
+try:
+    db.session.add(fav)
+    db.session.commit()
+    flash("Saved.")
+except IntegrityError:            # e.g. the same item saved twice
+    db.session.rollback()         # clean the session first
+    flash("You already saved that item.")</pre>
+    <p>An <code>IntegrityError</code> happens when a write breaks a database rule, such as the unique constraint. If a commit fails, the session must be rolled back before anything else, or the next request inherits the half-done change.</p>
+    <p><code>flash()</code> is a one-time message. After a POST the route redirects (so refreshing the page does not submit the form again), and <code>flash</code> carries the message across that redirect so the next page shows it once.</p>
+  </section>
+
+  <section>
+    <h2>9. Data-driven pages and the round trip</h2>
+    <p>A <strong>data-driven page</strong> gets its content from the project's own database rather than from the external API. For example, a profile page shows the user's email, their saved items sorted A to Z, and how many there are.</p>
+    <p>Every database-backed page follows the same path:</p>
+    <pre class="wk-code">Browser request -&gt; @app.route in app.py
+                -&gt; build a query / change a row
+                -&gt; db.session.commit()   (if writing)
+                -&gt; render_template(..., data=...)
+                -&gt; HTML back to the browser</pre>
+    <p>Reads use <strong>GET</strong>. Writes (create, update, delete) use <strong>POST</strong>, because a change to the server's data should never happen just from clicking a link.</p>
+  </section>
+
+  <section>
+    <h2>10. Common mistakes</h2>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Mistake</th><th>What happens</th></tr>
+        <tr><td>Forgetting <code>commit()</code></td><td>The change disappears on the next request</td></tr>
+        <tr><td><code>add()</code> on an update</td><td>Not needed: only new rows are added</td></tr>
+        <tr><td>Skipping the ownership check</td><td>Anyone edits anyone's data by changing the id (IDOR)</td></tr>
+        <tr><td><code>.get()</code> instead of <code>get_or_404()</code></td><td><code>None</code>, then a crash on the next line</td></tr>
+        <tr><td>Querying without the user filter</td><td><code>.all()</code> returns everyone's rows</td></tr>
+        <tr><td>No <code>rollback()</code> after a failed commit</td><td>The next request inherits the broken session</td></tr>
+        <tr><td>Trusting the HTML form</td><td>A direct POST skips it, so the server must re-check</td></tr>
+        <tr><td>Editing a model without rebuilding</td><td>"no such column" at runtime</td></tr>
+      </table>
+    </div>
+  </section>
+{% endblock %}

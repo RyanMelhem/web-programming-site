@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% block title %}Week 11 — Web Security{% endblock %}
+{% block head %}
+<style>
+  /* Styles used only on this page. Everything else comes from style.css. */
+  .wk-code {
+    background-color: var(--text);
+    color: #f7f5f0;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .wk-note {
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+  /* style.css turns every list in <main> into grid cards; these lists are normal bullets */
+  main ul.wk-list {
+    display: block;
+    list-style: disc;
+    padding-left: 1.3rem;
+  }
+  main ul.wk-list li {
+    background: none;
+    padding: 0;
+    margin-bottom: 0.4rem;
+  }
+  .wk-table-wrap { overflow-x: auto; }
+  .wk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  .wk-table th, .wk-table td {
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid var(--bg-elevated);
+    vertical-align: top;
+  }
+  .wk-table th {
+    background-color: var(--bg-elevated);
+    color: var(--text);
+  }
+  .wk-table code { white-space: nowrap; }
+  .wk-key {
+    background-color: var(--bg-elevated);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: var(--spacing-sm);
+    margin: var(--spacing-sm) 0;
+  }
+  .wk-key p { margin: 0; color: var(--text); }
+</style>
+{% endblock %}
+{% block content %}
+  <section>
+    <h2>Week 11 — Web Security</h2>
+    <p>Week 11 was about attacking and defending web applications. It is organised around the <strong>OWASP Top 10 (2025)</strong>, the industry's list of the ten most critical web-app security risks. For each risk the week showed how the attack works and how to close it in a Flask app. At the end, this portfolio site went through its own security review (section 11).</p>
+  </section>
+
+  <section>
+    <h2>1. The OWASP Top 10:2025</h2>
+    <p><strong>OWASP</strong> (Open Worldwide Application Security Project) is a non-profit security community. Its Top 10 is built from real breach data and gives developers a shared vocabulary. It is a starting point, not a complete checklist.</p>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>#</th><th>Risk</th><th>In one line</th></tr>
+        <tr><td>A01</td><td>Broken Access Control</td><td>Users reach data or actions that are not theirs</td></tr>
+        <tr><td>A02</td><td>Security Misconfiguration</td><td>Debug on, secrets in code, unsafe settings</td></tr>
+        <tr><td>A03</td><td>Software Supply Chain Failures</td><td>Vulnerable or malicious dependencies (new in 2025)</td></tr>
+        <tr><td>A04</td><td>Cryptographic Failures</td><td>Sensitive data not properly encrypted or hashed</td></tr>
+        <tr><td>A05</td><td>Injection</td><td>User input executed as code (SQL, commands, templates, XSS)</td></tr>
+        <tr><td>A06</td><td>Insecure Design</td><td>A flaw in the plan, not the code</td></tr>
+        <tr><td>A07</td><td>Authentication Failures</td><td>Weak log-in, sessions or password reset</td></tr>
+        <tr><td>A08</td><td>Software / Data Integrity Failures</td><td>Trusting data or code that may have been tampered with</td></tr>
+        <tr><td>A09</td><td>Logging &amp; Alerting Failures</td><td>Attacks leave no trace</td></tr>
+        <tr><td>A10</td><td>Mishandling Exceptional Conditions</td><td>Crashes and error pages that leak information (new in 2025)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Three golden rules and the attacker's mindset</h2>
+    <ul class="wk-list">
+      <li><strong>Never trust input.</strong> Form fields, URLs, cookies and JSON can all be hostile. Validate them and escape them for wherever they go.</li>
+      <li><strong>Least privilege.</strong> Every user, route, token and database account gets only the access it needs.</li>
+      <li><strong>Defence in depth.</strong> Never rely on one control; if one fails, the next one catches it.</li>
+    </ul>
+    <p>For every feature, ask four questions: <em>What is the input? Where does it go? What could a malicious value do there? Who can reach this route?</em></p>
+  </section>
+
+  <section>
+    <h2>3. Injection (A05)</h2>
+    <p>Injection happens when untrusted input is treated as <strong>code</strong> instead of <strong>data</strong>. The cause is always the same, mixing data and code in one string, and so is the cure: keep them separate.</p>
+    <p><strong>SQL injection.</strong> Gluing user text into a query lets the user rewrite it:</p>
+    <pre class="wk-code"># NEVER do this
+query = f"SELECT * FROM user WHERE email = '{email}'"
+
+# typing  ' OR '1'='1   matches every row -&gt; the whole table leaks
+# typing  admin@site.com' --   comments out the password check -&gt; log-in as admin</pre>
+    <p>The fix is to use the ORM or <strong>bound parameters</strong>, so the input can only ever be a value:</p>
+    <pre class="wk-code">rows = Favorite.query.filter(Favorite.item_title.ilike(f"%{q}%")).all()   # ORM: safe
+
+db.session.execute(text("SELECT ... WHERE item_title LIKE :pat"),
+                   {"pat": f"%{q}%"})                                     # bound parameter: safe</pre>
+    <p><strong>OS command injection.</strong> Passing a filename into <code>os.system(f"convert uploads/{name} ...")</code> lets <code>photo.png; rm -rf /</code> run a second command on the server (remote code execution). The fix is <code>subprocess.run([...])</code> with the arguments as a list, so nothing is parsed by a shell, plus validating the filename.</p>
+    <p><strong>Server-side template injection.</strong> Building a template from user input with <code>render_template_string</code> lets <code>{% raw %}{{7*7}}{% endraw %}</code> be evaluated (the page shows 49), and from there the attacker can read the app's secrets. The fix is <code>render_template("hello.html", name=name)</code>, so the input is passed as data and escaped.</p>
+    <div class="wk-key"><p>Never paste user input into a query, a command, or a template string.</p></div>
+  </section>
+
+  <section>
+    <h2>4. Cross-Site Scripting (XSS)</h2>
+    <p>XSS means an attacker's JavaScript runs in <em>another user's</em> browser, on your site, where it can steal cookies or act as the victim. The attacker simply uses a normal feature, such as a note or a bio, and types a script instead of text.</p>
+    <ul class="wk-list">
+      <li><strong>Stored XSS</strong>: the script is saved in the database and runs for everyone who views the page. The most dangerous kind.</li>
+      <li><strong>Reflected XSS</strong>: the script rides in a link (<code>?q=&lt;script&gt;...</code>) and bounces back into the page.</li>
+      <li><strong>DOM-based XSS</strong>: the browser's own JavaScript writes attacker HTML, for example with <code>innerHTML</code>.</li>
+    </ul>
+    <p><strong>Jinja escapes everything printed with double braces by default</strong>, so <code>&lt;script&gt;</code> is shown as harmless text. The danger is turning that off: never use <code>| safe</code> or <code>Markup()</code> on anything a user supplied, and in JavaScript use <code>textContent</code> rather than <code>innerHTML</code> for user data. Escaping also has to fit where the value lands: inside <code>&lt;script&gt;</code> use <code>| tojson</code>, and in links block <code>javascript:</code> URLs. If some HTML must be allowed, it is cleaned to an allow-list of tags with <code>bleach</code>.</p>
+    <p>A <strong>Content-Security-Policy</strong> header is the second line of defence: it tells the browser which scripts may run, so an injected script is refused even if it slips through.</p>
+  </section>
+
+  <section>
+    <h2>5. Insecure Design (A06)</h2>
+    <p>A design flaw cannot be fixed with one line, because the idea itself is wrong. Examples: a log-in with no limit on attempts, a password-reset link that never expires, a checkout that reaches "success" without payment, or trusting a price sent from a hidden form field. The fix for that last one is not escaping the price, it is never trusting it: the server looks the price up itself. Security is designed in from the start, through threat modelling and security requirements.</p>
+  </section>
+
+  <section>
+    <h2>6. Broken Access Control (A01), the number one risk</h2>
+    <ul class="wk-list">
+      <li><strong>Authentication</strong> asks <em>who are you?</em> (<code>@login_required</code>). <strong>Authorization</strong> asks <em>what may you touch?</em> (the ownership check). One without the other is a lock that opens for everyone once they are inside.</li>
+      <li><strong>IDOR</strong>: changing an id in the URL to reach someone else's row. Fixed by the ownership check, which returns 403.</li>
+      <li><strong>Missing function-level checks</strong>: an admin page protected only by <code>@login_required</code> is open to every user. It must also check the user's role.</li>
+      <li><strong>Forced browsing</strong>: attackers guess URLs like <code>/admin</code> or <code>/backup.zip</code>. A page not being linked anywhere is not protection; the route must check every time.</li>
+      <li><strong>CSRF</strong> also belongs here: every form that changes data needs a CSRF token.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>7. Security Misconfiguration (A02)</h2>
+    <ul class="wk-list">
+      <li><strong>Debug mode in production</strong> turns any error into an interactive Python console. Debug is read from an environment variable and stays off on the live site.</li>
+      <li><strong>Secrets in Git</strong> are public forever, because the history keeps them. Keys and database URLs go in environment variables, and <code>.env</code> and <code>*.db</code> go in <code>.gitignore</code>. A leaked key is rotated, not just deleted.</li>
+      <li><strong>A weak <code>SECRET_KEY</code></strong> such as <code>"dev"</code> lets attackers forge session cookies. It is generated with <code>secrets.token_hex(32)</code>.</li>
+      <li><strong>Cookie flags</strong>: <code>HttpOnly</code>, <code>Secure</code>, <code>SameSite="Lax"</code> and a session time limit.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>8. Cryptographic Failures (A04)</h2>
+    <p>HTTPS protects data in transit (with HSTS telling browsers to always use it), and passwords are stored as salted, slow, one-way hashes. The things not to do: invent your own cryptography, hash passwords with MD5 or SHA-1, treat Base64 as encryption (it is only an encoding anyone can reverse), or log a password or token.</p>
+  </section>
+
+  <section>
+    <h2>9. Supply Chain (A03) and Integrity (A08)</h2>
+    <p>A web app ships other people's code: Flask, SQLAlchemy, gunicorn and everything they depend on. A vulnerability in any of them is a vulnerability in the app. The defences:</p>
+    <pre class="wk-code">pip install -r requirements.txt   # install only what is listed
+pip list --outdated                # what has a newer, safer release
+pip-audit                          # scan for known vulnerabilities</pre>
+    <p>Versions are pinned in <code>requirements.txt</code> (for example <code>Flask==3.1.3</code>) so every build is the same, dependencies are kept to a minimum, and package names are checked carefully against look-alikes. For integrity, untrusted data is read with <code>json</code>, never <code>pickle</code>, which can execute code.</p>
+  </section>
+
+  <section>
+    <h2>10. Authentication Failures (A07), Logging (A09) and Errors (A10)</h2>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Problem</th><th>Fix</th></tr>
+        <tr><td>Brute-force password guessing</td><td>Rate limiting, e.g. 5 log-in attempts per minute (then 429 Too Many Requests)</td></tr>
+        <tr><td>Session fixation</td><td><code>session.clear()</code> before storing the user id at log-in</td></tr>
+        <tr><td>Account enumeration</td><td>One message for every log-in failure, and similar response times</td></tr>
+        <tr><td>Weak password reset</td><td>A signed, expiring, one-time token (<code>URLSafeTimedSerializer</code>)</td></tr>
+        <tr><td>Attacks leaving no trace</td><td>Log failed log-ins, 403s and errors, never passwords or tokens</td></tr>
+        <tr><td>Stack traces shown to users</td><td>Custom 404 and 500 pages; roll back the session on errors</td></tr>
+        <tr><td>External API down or slow</td><td>A timeout and <code>try</code>/<code>except</code>, then a friendly message instead of a crash</td></tr>
+        <tr><td>Open redirect (<code>?next=//evil.com</code>)</td><td>Only redirect to local paths</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>11. Applied to this site: the security review</h2>
+    <p>The Week 11 activity was an AI-assisted security review, where every finding is verified rather than taken on trust. This portfolio was reviewed and tested, and these changes were made:</p>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Finding</th><th>Fix</th></tr>
+        <tr><td>The Week 4 profile page placed the submitted colour inside a <code>&lt;style&gt;</code> block, where HTML escaping is not enough (CSS injection)</td><td>The Week 4 route now accepts only a real <code>#rrggbb</code> colour</td></tr>
+        <tr><td>No security headers</td><td>Content-Security-Policy, HSTS, nosniff, anti-framing and a referrer policy on every page</td></tr>
+        <tr><td>Unpinned dependencies; <code>pip-audit</code> found a known vulnerability in Werkzeug 3.1.8</td><td>Exact versions pinned, Werkzeug updated to 3.1.9, scan now clean</td></tr>
+        <tr><td><code>debug=True</code> hard-coded</td><td>Debug only when <code>FLASK_DEBUG=1</code> is set locally</td></tr>
+        <tr><td>A database file tracked in Git</td><td><code>*.db</code> added to <code>.gitignore</code></td></tr>
+      </table>
+    </div>
+    <p>Already secure: only the ORM is used (no SQL built with f-strings), Jinja auto-escaping is never turned off, the JavaScript writes user text with <code>textContent</code>, no secrets appear anywhere in the Git history, and the Week 8 form validates every field on the server.</p>
+  </section>
+{% endblock %}

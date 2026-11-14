@@ -91,6 +91,7 @@ WEEKLY_WORK = [
     {"week": 8, "title": "Validate the Profile Form on the Server", "url": "/profile-validated"},
     {"week": 9, "title": "Team Project, Accounts and Security Basics", "url": "/week9"},
     {"week": 10, "title": "Working with the Database (CRUD)", "url": "/week10"},
+    {"week": 11, "title": "Web Security (OWASP Top 10)", "url": "/week11"},
 ]
 
 
@@ -122,6 +123,12 @@ def week9():
 def week10():
     """Week 10: working with the database (CRUD, queries, ownership check)."""
     return render_template("week10.html")
+
+
+@app.route("/week11")
+def week11():
+    """Week 11: web security (OWASP Top 10) and this site's security review."""
+    return render_template("week11.html")
 
 
 @app.route("/internet-history")

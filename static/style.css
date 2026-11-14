@@ -273,3 +273,34 @@ footer {
         align-items: stretch;
     }
 }
+
+/* ---- Week 12: keyboard focus + skip link ---------------------------------- */
+
+/* A clear outline on whatever the keyboard is on (Tab). :focus-visible shows it
+   for keyboard users but not after a mouse click. Never use outline: none. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--text);
+    outline-offset: 2px;
+}
+
+/* Skip link: off-screen until it gets keyboard focus (first Tab on the page),
+   then it appears at the top-left. Enter jumps to <main id="main">. */
+.skip-link {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    z-index: 200;
+    background-color: var(--text);
+    color: #ffffff;
+    padding: 0.6rem 1rem;
+    border-radius: 0 0 var(--radius) 0;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    left: 0;
+}

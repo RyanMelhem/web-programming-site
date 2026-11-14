@@ -138,4 +138,20 @@ button.addEventListener('click', function () {
       <li>Error states: stopping the server and clicking <em>Next</em> in the Live Quiz shows the red error box instead of a frozen page; submitting the validated form empty shows the error summary.</li>
     </ul>
   </section>
+
+  <section>
+    <h2>8. Audit after the changes</h2>
+    <p>Same tools, same pages, same Lighthouse <strong>Mobile</strong> mode, run on the live Render site after deploying.</p>
+    <div class="wk-table-wrap">
+      <table class="wk-table">
+        <tr><th>Page</th><th>When</th><th>Performance</th><th>Accessibility</th><th>Best Practices</th><th>SEO</th></tr>
+        <tr><td>Home</td><td>Before</td><td>89</td><td>100</td><td>100</td><td>90</td></tr>
+        <tr><td>Home</td><td>After</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+        <tr><td>Student Profile (Validated)</td><td>Before</td><td>100</td><td>100</td><td>100</td><td>90</td></tr>
+        <tr><td>Student Profile (Validated)</td><td>After</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+      </table>
+    </div>
+    <p><strong>WAVE</strong> (home page): still 0 errors, 0 contrast errors and 0 alerts, but <em>Features</em> went from 1 to 3 and <em>ARIA</em> from 0 to 3. WAVE now detects the skip link and the menu's <code>aria-expanded</code>, <code>aria-controls</code> and <code>aria-label</code>, which shows the new accessibility features are really in the page.</p>
+    <div class="wk-key"><p>SEO went from 90 to 100 on both pages because of the meta description. Accessibility was already 100, so the real improvement is in what the scores cannot measure: a usable phone layout, keyboard navigation, and messages that screen readers announce.</p></div>
+  </section>
 {% endblock %}

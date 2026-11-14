@@ -304,3 +304,10 @@ textarea:focus-visible {
 .skip-link:focus {
     left: 0;
 }
+
+/* ---- Week 12: responsive images -------------------------------------------
+   Never wider than their container; height follows so proportions stay right. */
+img {
+    max-width: 100%;
+    height: auto;
+}

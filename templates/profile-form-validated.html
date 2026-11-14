@@ -15,7 +15,7 @@
   <p>Complete this form to provide information about your academic background, technical skills, internship experience, and Final Year Project preferences.</p>
 
   {% if errors %}
-    <p class="error">Some fields need fixing. Check the messages below each field.</p>
+    <p class="error" role="alert">Some fields need fixing. Check the messages below each field.</p>
   {% endif %}
 
   <form action="{{ url_for('profile_validated') }}" method="post" novalidate>

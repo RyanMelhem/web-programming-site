@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %} Quiz {% endblock %} {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}" />
 {% endblock %} {% block content%}
-<main class="container">
+<div class="container">
   <h1>JavaScript Quiz</h1>
   <section id="quizPanel">
     <p id="progress"></p>
@@ -23,6 +23,6 @@
     <h3>Correction</h3>
     <pre id="correction"></pre>
   </section>
-</main>
+</div>
 <script src="{{ url_for('static', filename='quiz.js') }}"></script>
 {% endblock %}

@@ -6,13 +6,15 @@
     <meta name="description" content="Ryan Melhem's GIN446 Web Programming portfolio at USEK: weekly work in HTML, CSS, JavaScript, Flask, databases, accounts and web security.">
     <title>{% block title %}My Web Programming Portfolio{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='nav.js') }}" defer></script>
     {% block head %}{% endblock %}
 </head>
 <body>
     <header>
     <h1>Web Programming Portfolio — Ryan Melhem</h1>
     <p>Website development that changes drastically every week.</p>
-    <nav>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav">☰ Menu</button>
+    <nav id="site-nav" aria-label="Main">
         <a href="{{ url_for('home') }}">Home</a>
         <a href="{{ url_for('week1') }}">Week 1 (Plain HTML)</a>
         <a href="{{ url_for('internet_history') }}">History of the Internet</a>

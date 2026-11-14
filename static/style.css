@@ -230,3 +230,46 @@ footer {
         font-size: 0.95rem;
     }
 }
+
+/* ---- Week 12: collapsible menu on phones ---------------------------------
+   The ☰ button only shows when JavaScript is running (nav.js adds class="js"
+   to <html>). Without JS the button stays hidden and the nav stays visible. */
+.nav-toggle {
+    display: none;
+}
+
+@media (max-width: 599px) {
+    .js .nav-toggle {
+        display: inline-block;
+        margin-top: var(--spacing-sm);
+        background-color: var(--primary);
+        color: #ffffff;
+        border: none;
+        border-radius: var(--radius);
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        font-family: var(--font-body);
+        cursor: pointer;
+    }
+
+    .js .nav-toggle:hover {
+        background-color: var(--primary-hover);
+    }
+
+    .js .nav-toggle:focus-visible {
+        outline: 3px solid var(--text);
+        outline-offset: 2px;
+    }
+
+    /* menu closed: hide the links */
+    .js #site-nav {
+        display: none;
+    }
+
+    /* menu open: one link per row, full width = big tap targets */
+    .js #site-nav.is-open {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

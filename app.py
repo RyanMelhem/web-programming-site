@@ -36,10 +36,42 @@ Example inside profile.html (which extends your base.html):
   <p>Software: {{ software | join(', ') }}</p>
 """
 
+import os
+import base64
+import hashlib
+
 from flask import Flask, render_template, request
-from validators import validate_profile
+from validators import validate_profile, HEXCOLOR
 
 app = Flask(__name__)
+
+
+# ---- Security headers (Week 11: defence in depth) --------------------------
+# The two quiz pages use small inline onclick="..." handlers. Instead of allowing
+# ALL inline JavaScript, the CSP allows only these exact handlers, by their hash.
+_ALLOWED_HANDLERS = ["goFirst()", "goPrevious()", "goNext()", "goLast()", "submitQuiz()"]
+_HANDLER_HASHES = " ".join(
+    "'sha256-" + base64.b64encode(hashlib.sha256(h.encode()).digest()).decode() + "'"
+    for h in _ALLOWED_HANDLERS
+)
+CSP = (
+    "default-src 'self'; "
+    "script-src 'self' 'unsafe-hashes' " + _HANDLER_HASHES + "; "
+    "style-src 'self' 'unsafe-inline'; "     # the pages use inline style="" / <style>
+    "img-src 'self' data:; "
+    "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+)
+
+
+@app.after_request
+def add_security_headers(response):
+    response.headers["Content-Security-Policy"] = CSP
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["X-Frame-Options"] = "DENY"
+    # Browsers only apply HSTS over HTTPS (Render); it is ignored on http://127.0.0.1.
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
 
 from quiz_api import init_quiz
 init_quiz(app)
@@ -107,6 +139,10 @@ def submit_profile():
     """
     if request.method == "POST":
         data = request.form.to_dict()                   # all single-value fields
+        # Week 11 fix: profile.html puts the colour inside a <style> block, where
+        # HTML escaping is not enough (CSS injection). Only allow a real #rrggbb colour.
+        if "project_color" in data and not HEXCOLOR.match(data["project_color"]):
+            data["project_color"] = "#336699"
         skills = request.form.getlist("skills")         # checkboxes -> list
         software = request.form.getlist("software")     # multiple <select> -> list
         return render_template(
@@ -150,4 +186,6 @@ def quiz():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Week 11 fix: debug only when FLASK_DEBUG=1 is set (locally), never hard-coded.
+    debug = os.environ.get("FLASK_DEBUG") == "1"
+    app.run(host="127.0.0.1", port=5000, debug=debug)

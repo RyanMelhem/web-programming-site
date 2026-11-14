@@ -12,3 +12,6 @@ __pycache__/
 # Editor
 .vscode/
 .DS_Store
+
+# Local databases (never commit)
+*.db
